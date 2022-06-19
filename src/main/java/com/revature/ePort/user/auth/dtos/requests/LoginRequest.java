@@ -1,4 +1,4 @@
-package com.revature.ePort.auth.dtos.requests;
+package com.revature.ePort.user.auth.dtos.requests;
 
 public class LoginRequest {
     private String username;

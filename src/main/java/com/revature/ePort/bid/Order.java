@@ -20,7 +20,7 @@ public class Order {
     @Column(name = "shippedAddress", nullable = false)
     private String shippedAddress;
 
-    @OneToOne(mappedBy = "bid")
+    @OneToOne(mappedBy = "order")
     private Bid bid;
 
     public Order() {
@@ -65,6 +65,14 @@ public class Order {
 
     public void setShippedAddress(String shippedAddress) {
         this.shippedAddress = shippedAddress;
+    }
+
+    public Bid getBid() {
+        return bid;
+    }
+
+    public void setBid(Bid bid) {
+        this.bid = bid;
     }
 
     @Override

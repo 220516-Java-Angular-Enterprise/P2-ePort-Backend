@@ -1,8 +1,8 @@
-package com.revature.ePort.auth;
+package com.revature.ePort.user.auth;
 
 
 
-import com.revature.ePort.auth.dtos.response.Principal;
+import com.revature.ePort.user.auth.dtos.response.Principal;
 import com.revature.ePort.util.annotations.Inject;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

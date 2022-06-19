@@ -1,6 +1,9 @@
-package com.revature.ePort.scp;
+package com.revature.ePort.tag;
+
+import com.revature.ePort.scp.SCPTag;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tag")
@@ -10,6 +13,9 @@ public class Tag {
     private String id;
     @Column(name = "tagName", nullable = false)
     private String tagName;
+
+    @OneToMany(mappedBy = "scp")
+    private List<SCPTag> scpTags;
 
     public Tag() {
         super();
@@ -29,5 +35,13 @@ public class Tag {
 
     public void setTagName(String tagName) {
         this.tagName = tagName;
+    }
+
+    public List<SCPTag> getScpTags() {
+        return scpTags;
+    }
+
+    public void setScpTags(List<SCPTag> scpTags) {
+        this.scpTags = scpTags;
     }
 }

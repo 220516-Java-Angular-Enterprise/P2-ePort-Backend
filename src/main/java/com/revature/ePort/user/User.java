@@ -1,5 +1,6 @@
 package com.revature.ePort.user;
 
+import com.revature.ePort.auctionshowing.AuctionShowing;
 import com.revature.ePort.bid.Bid;
 
 import javax.persistence.*;
@@ -34,11 +35,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Bid> bids;
 
+    @OneToMany(mappedBy = "user")
+    private List<AuctionShowing> auctionShowings;
+
 
     public User() {
         super();
     }
 
+    public User(String id, String username, String password, String role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     public String getId() {
         return id;
@@ -128,18 +138,11 @@ public class User {
         this.bids = bids;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", email='" + email + '\'' +
-                ", codename='" + codename + '\'' +
-                ", shippingAddress='" + shippingAddress + '\'' +
-                ", paymentID='" + paymentID + '\'' +
-                ", isActive=" + isActive +
-                '}';
+    public List<AuctionShowing> getAuctionShowings() {
+        return auctionShowings;
+    }
+
+    public void setAuctionShowings(List<AuctionShowing> auctionShowings) {
+        this.auctionShowings = auctionShowings;
     }
 }

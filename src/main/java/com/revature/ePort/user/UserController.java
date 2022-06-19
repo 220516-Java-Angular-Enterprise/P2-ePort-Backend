@@ -35,7 +35,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String register(@RequestBody NewUserRequest newUserRequest){
-        //todo Implement this method
+        userService.register(newUserRequest);
         return null;
     }
 

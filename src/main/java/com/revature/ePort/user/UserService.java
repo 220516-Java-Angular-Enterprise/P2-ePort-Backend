@@ -28,7 +28,7 @@ public class UserService {
      * @return Returns the user object that was recently added to the database
      */
     public User register(NewUserRequest request){
-        //todo implement this
+        userRepository.saveUser("id","username", "password", "role");
         return null;
     }
 }

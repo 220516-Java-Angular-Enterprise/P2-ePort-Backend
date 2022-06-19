@@ -11,9 +11,8 @@ public class Bid {
 
     //todo find out how to do composite keys and make sure database works before pushing to main
 
-    private String auctionShowingID;
-
-    private String userID;
+    @EmbeddedId
+    private BidID bidID;
 
     @Column(name = "amount", nullable = false)
     private int amount;
@@ -25,31 +24,23 @@ public class Bid {
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "User_ID", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "Auction_Showing_ID", referencedColumnName = "id")
+    @JoinColumn(name = "auction_showing_id", referencedColumnName = "id", insertable = false, updatable = false)
     private AuctionShowing auctionShowing;
 
     public Bid() {
         super();
     }
 
-    public String getAuctionShowingID() {
-        return auctionShowingID;
+    public BidID getBidID() {
+        return bidID;
     }
 
-    public void setAuctionShowingID(String auctionShowingID) {
-        this.auctionShowingID = auctionShowingID;
-    }
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setBidID(BidID bidID) {
+        this.bidID = bidID;
     }
 
     public int getAmount() {

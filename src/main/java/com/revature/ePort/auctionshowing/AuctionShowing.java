@@ -1,10 +1,12 @@
 package com.revature.ePort.auctionshowing;
 
+import com.revature.ePort.bid.Bid;
 import com.revature.ePort.scp.SCP;
 import com.revature.ePort.user.User;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Entity
@@ -26,11 +28,13 @@ public class AuctionShowing {
     @Column(name = "buyoutBid", nullable = false)
     private int buyoutBid;
     @ManyToOne
-    @JoinColumn(name = "User_ID", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @OneToOne
     @JoinColumn(name = "SCP_ID", referencedColumnName = "id",nullable = false)
     private SCP scp;
+    @OneToMany(mappedBy = "auctionShowing")
+    private List<Bid> bids;
 
 
     public AuctionShowing() {
@@ -110,18 +114,11 @@ public class AuctionShowing {
         this.scp = scp;
     }
 
-    @Override
-    public String toString() {
-        return "AuctionShowing{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", auctionStatus=" + auctionStatus +
-                ", startingDate=" + startingDate +
-                ", expirationDate=" + expirationDate +
-                ", startingBid=" + startingBid +
-                ", buyoutBid=" + buyoutBid +
-                ", user=" + user +
-                ", scp=" + scp +
-                '}';
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 }

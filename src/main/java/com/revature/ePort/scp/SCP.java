@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@Table(name = "SCP")
+@Table(name = "scp")
 public class SCP {
 
     //todo look up how to create a blob object in java or how JPA handles blob objects
@@ -21,7 +21,7 @@ public class SCP {
     @Column(name = "img", nullable = false)
     private byte[] img;
 
-    @OneToOne(mappedBy = "auction_showing")
+    @OneToOne(mappedBy = "scp")
     private AuctionShowing auctionShowing;
     @OneToMany(mappedBy = "scp")
     private List<SCPTag> scpTags;
@@ -64,22 +64,19 @@ public class SCP {
         this.img = img;
     }
 
+    public AuctionShowing getAuctionShowing() {
+        return auctionShowing;
+    }
+
+    public void setAuctionShowing(AuctionShowing auctionShowing) {
+        this.auctionShowing = auctionShowing;
+    }
+
     public List<SCPTag> getScpTags() {
         return scpTags;
     }
 
     public void setScpTags(List<SCPTag> scpTags) {
         this.scpTags = scpTags;
-    }
-
-    @Override
-    public String toString() {
-        return "SCP{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", img=" + Arrays.toString(img) +
-                ", scpTags=" + scpTags +
-                '}';
     }
 }
