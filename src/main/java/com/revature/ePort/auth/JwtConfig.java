@@ -1,4 +1,4 @@
-package com.revature.ePort.user.auth;
+package com.revature.ePort.auth;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;

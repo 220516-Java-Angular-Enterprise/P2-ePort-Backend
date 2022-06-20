@@ -1,4 +1,4 @@
-package com.revature.ePort.scp;
+package com.revature.ePort.scptag;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

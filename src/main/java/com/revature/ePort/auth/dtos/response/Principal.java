@@ -1,4 +1,4 @@
-package com.revature.ePort.user.auth.dtos.response;
+package com.revature.ePort.auth.dtos.response;
 
 
 import com.revature.ePort.user.User;

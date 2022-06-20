@@ -1,6 +1,7 @@
 package com.revature.ePort.bid;
 
 import com.revature.ePort.auctionshowing.AuctionShowing;
+import com.revature.ePort.order.Order;
 import com.revature.ePort.user.User;
 
 import javax.persistence.*;

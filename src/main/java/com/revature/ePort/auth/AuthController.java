@@ -1,7 +1,7 @@
-package com.revature.ePort.user.auth;
+package com.revature.ePort.auth;
 
-import com.revature.ePort.user.auth.dtos.requests.LoginRequest;
-import com.revature.ePort.user.auth.dtos.response.Principal;
+import com.revature.ePort.auth.dtos.response.Principal;
+import com.revature.ePort.auth.dtos.requests.LoginRequest;
 import com.revature.ePort.user.UserService;
 import com.revature.ePort.util.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;

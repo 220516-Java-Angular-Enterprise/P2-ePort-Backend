@@ -1,4 +1,6 @@
-package com.revature.ePort.bid;
+package com.revature.ePort.order;
+
+import com.revature.ePort.bid.Bid;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

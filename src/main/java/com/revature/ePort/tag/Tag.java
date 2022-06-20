@@ -1,6 +1,6 @@
 package com.revature.ePort.tag;
 
-import com.revature.ePort.scp.SCPTag;
+import com.revature.ePort.scptag.SCPTag;
 
 import javax.persistence.*;
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.revature.ePort.scp;
 
 import com.revature.ePort.auctionshowing.AuctionShowing;
+import com.revature.ePort.scptag.SCPTag;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
