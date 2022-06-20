@@ -1,7 +1,10 @@
 package com.revature.ePort.user;
 
+import com.revature.ePort.user.dtos.requests.ActivateUser;
+import com.revature.ePort.user.dtos.requests.EditUser;
 import com.revature.ePort.user.dtos.requests.NewUserRequest;
 import com.revature.ePort.util.annotations.Inject;
+import com.revature.ePort.util.custom_exception.InvalidRequestException;
 import com.revature.ePort.util.custom_exception.ResourceConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +38,20 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String register(@RequestBody NewUserRequest newUserRequest){
-        userService.register(newUserRequest);
-        return null;
+        return userService.register(newUserRequest).getId();
+    }
+    @RequestMapping("/activate")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void activate(@RequestBody ActivateUser activateUser){
+        userService.enableUser(activateUser);
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void editDetails(@RequestBody EditUser editUser){
+        userService.updateUser(editUser);
     }
 
     /**
@@ -55,4 +70,15 @@ public class UserController {
         responseBody.put("timestamp", LocalDateTime.now().toString());
         return responseBody;
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody Map<String, Object> handleInvalidRequestException(InvalidRequestException e){
+        Map<String, Object> responseBody = new LinkedHashMap<>();
+        responseBody.put("status", 404);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now().toString());
+        return responseBody;
+    }
+
 }
