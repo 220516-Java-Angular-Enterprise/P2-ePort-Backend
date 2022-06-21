@@ -21,6 +21,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.doomedcat17</groupId>
+            <artifactId>scpier</artifactId>
+            <version>0.5.8</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>

@@ -1,9 +1,11 @@
 package com.revature.ePort.user;
 
+import com.revature.ePort.auth.dtos.requests.LoginRequest;
 import com.revature.ePort.user.dtos.requests.ActivateUser;
 import com.revature.ePort.user.dtos.requests.EditUser;
 import com.revature.ePort.user.dtos.requests.NewUserRequest;
 import com.revature.ePort.util.annotations.Inject;
+import com.revature.ePort.util.custom_exception.AuthenticationException;
 import com.revature.ePort.util.custom_exception.InvalidRequestException;
 import com.revature.ePort.util.custom_exception.ResourceConflictException;
 import org.apache.commons.beanutils.BeanUtils;
@@ -51,15 +53,33 @@ public class UserService {
         return user;
     }
 
+    public User login(LoginRequest loginRequest){
+        if(loginRequest.getUsername() == null || loginRequest.getPassword() == null) throw new InvalidRequestException();//401
+        if(!isValidUsername(loginRequest.getUsername()) || !isValidPassword(loginRequest.getPassword())) throw new InvalidRequestException("Invalid username or password");//404
+        User user = userRepository.getUserByUsernameAndPassword(loginRequest.getUsername(),loginRequest.getPassword());
+        if(user == null)throw new InvalidRequestException("Invalid credentials");//404
+        if (!user.isActive()) throw new AuthenticationException("Inactive User");//403
+        return user;
+    }
+
     public void enableUser(ActivateUser activateUser){
         if(activateUser.getUserID() == null) throw new InvalidRequestException("Invalid request, user ID is null");
         if(!userIDExists(activateUser.getUserID())) throw new InvalidRequestException("Invalid user ID");
         userRepository.updateUserStatus(activateUser.isActive(), activateUser.getUserID());
     }
 
+    public User getUserByUsername(String username){
+        User user = userRepository.getUserByUsername(username);
+        if(user == null) throw new InvalidRequestException("User does not exist");
+        return user;
+    }
+
+    public List<User> getAllUsers(){
+        return userRepository.getAllUsers();
+    }
+
     public void updateUser(EditUser editUser){
         User user = userRepository.getUserbyID(editUser.getUserID());
-
         if(user == null) throw new ResourceConflictException("Invalid user id");
         if(editUser.getUsername() != null && editUser.getUsername().equals(user.getUsername()) && userExists(user.getUsername())) throw new ResourceConflictException("This username is already taken");
         editUser.updateUser(user);
@@ -71,6 +91,10 @@ public class UserService {
         if(editUser.getPassword() != null && isValidPassword(editUser.getPassword())){
             userRepository.encryptPassword(editUser.getPassword(),editUser.getUserID());
         }else if(editUser.getPassword() != null)throw new InvalidRequestException("Invalid password, must be longer than 8 characters and contain one number, one special character, and one alphabetical character");
+    }
+
+    public void deleteUser(ActivateUser activateUser){
+        if(userRepository.deleteUser(activateUser.getUserID()) == 0) throw new InvalidRequestException("Invalid request, user does not exist or is active");
     }
 
     private String nullChecker(NewUserRequest request){

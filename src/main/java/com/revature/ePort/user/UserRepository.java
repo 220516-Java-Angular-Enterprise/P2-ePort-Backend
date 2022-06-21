@@ -21,6 +21,9 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Query(value = "UPDATE users SET username = ?1, codename = ?2, email = ?3, paymentid = ?4, shipping_address = ?5, funds = ?6 WHERE id = ?7", nativeQuery = true)
     void updateUser(String username, String codename, String email, String paymentID, String shippingAddress, int funds, String id);
 
+    @Query(value = "SELECT * FROM users", nativeQuery = true)
+    List<User> getAllUsers();
+
     @Query(value = "SELECT username FROM users", nativeQuery = true)
     List<String> getAllUsername();
 
@@ -29,4 +32,14 @@ public interface UserRepository extends CrudRepository<User, String> {
 
     @Query(value = "SELECT * FROM users WHERE id = ?1", nativeQuery = true)
     User getUserbyID(String id);
+
+    @Query(value = "SELECT * FROM users WHERE username = ?1", nativeQuery = true)
+    User getUserByUsername(String username);
+
+    @Query(value = "SELECT * FROM users WHERE username = ?1 AND password = crypt(?2,password)", nativeQuery = true)
+    User getUserByUsernameAndPassword(String username, String password);
+
+    @Modifying
+    @Query(value = "DELETE FROM users WHERE id = ?1 AND is_active IS NOT TRUE", nativeQuery = true)
+    int deleteUser(String id);
 }
