@@ -2,20 +2,26 @@ package com.revature.ePort.user.dtos.requests;
 
 import com.revature.ePort.user.User;
 
-import java.util.UUID;
-
-public class NewUserRequest {
-
+public class EditUser {
+    private String userID;
     private String username;
     private String password;
-    private final String role = "DEFAULT";
     private String codename;
     private String paymentID;
     private String shippingAddress;
     private String email;
+    private int funds;
 
-    public NewUserRequest() {
+    public EditUser() {
         super();
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String usedID) {
+        this.userID = usedID;
     }
 
     public String getUsername() {
@@ -32,10 +38,6 @@ public class NewUserRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
     }
 
     public String getCodename() {
@@ -70,18 +72,23 @@ public class NewUserRequest {
         this.email = email;
     }
 
-    public User extractUser(){
-        User user = new User();
-        user.setId(UUID.randomUUID().toString());
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setCodename(codename);
-        user.setEmail(email);
-        user.setPaymentID(paymentID);
-        user.setShippingAddress(shippingAddress);
-        user.setActive(false);
-        user.setRole("DEFAULT");
-        user.setFunds(0);
+    public int getFunds() {
+        return funds;
+    }
+
+    public void setFunds(int funds) {
+        this.funds = funds;
+    }
+
+    public User updateUser(User user){
+        //todo get password working
+        if(username != null)user.setUsername(username);
+        //if(password != null)user.setPassword(password);
+        if(codename != null)user.setCodename(codename);
+        if(email != null)user.setEmail(email);
+        if(paymentID != null)user.setPaymentID(paymentID);
+        if(shippingAddress != null)user.setShippingAddress(shippingAddress);
+        if(funds != 0)user.setFunds(user.getFunds() + funds);
         return user;
     }
 }

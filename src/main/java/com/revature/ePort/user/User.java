@@ -145,4 +145,22 @@ public class User {
     public void setAuctionShowings(List<AuctionShowing> auctionShowings) {
         this.auctionShowings = auctionShowings;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", email='" + email + '\'' +
+                ", codename='" + codename + '\'' +
+                ", shippingAddress='" + shippingAddress + '\'' +
+                ", funds=" + funds +
+                ", paymentID='" + paymentID + '\'' +
+                ", isActive=" + isActive +
+                ", bids=" + bids +
+                ", auctionShowings=" + auctionShowings +
+                '}';
+    }
 }
