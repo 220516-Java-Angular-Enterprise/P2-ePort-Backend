@@ -31,6 +31,12 @@ public class SCP {
         super();
     }
 
+    public SCP(String id, String name, String description, byte[] img) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.img = img;
+    }
 
     public String getId() {
         return id;
