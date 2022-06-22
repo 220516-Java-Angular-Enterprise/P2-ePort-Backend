@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.View;
 import java.util.List;
 
 @RestController
@@ -23,14 +24,19 @@ public class BidController {
         this.bidService = bidService;
     }
 
-    /*@PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     NewBid addNewBid(@RequestBody NewBid newBid){
         return bidService.addNewBid(newBid);
     }
 
-    @PutMapping()
+    @PutMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody void updateBid(@RequestBody NewBid updateBid){
         bidService.updateBid(updateBid);
-    }*/
+    }
+
+    @GetMapping(path = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody List<ViewBidHistory> bidHistoryList(@RequestBody String userID){
+        return bidService.bidHistoryList(userID);
+    }
 }

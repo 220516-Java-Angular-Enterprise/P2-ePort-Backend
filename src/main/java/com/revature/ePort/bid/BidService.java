@@ -1,11 +1,13 @@
 package com.revature.ePort.bid;
 
 import com.revature.ePort.bid.dtos.requests.NewBid;
+import com.revature.ePort.bid.dtos.responses.ViewBidHistory;
 import com.revature.ePort.util.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Service
@@ -25,5 +27,9 @@ public class BidService {
 
     public void updateBid(NewBid updateBid){
         bidRepository.updateBid(updateBid.getAmount(),updateBid.getUser_id(),updateBid.getAuction_id());
+    }
+
+    public List<ViewBidHistory> bidHistoryList(String userID){
+        return bidRepository.bidHistory(userID);
     }
 }

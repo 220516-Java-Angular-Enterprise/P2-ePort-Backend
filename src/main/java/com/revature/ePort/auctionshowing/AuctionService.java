@@ -1,5 +1,8 @@
 package com.revature.ePort.auctionshowing;
 
+import com.doomedcat17.scpier.ScpFoundationDataProvider;
+import com.doomedcat17.scpier.data.scp.SCPBranch;
+import com.doomedcat17.scpier.exception.SCPierApiException;
 import com.revature.ePort.auctionshowing.dtos.requests.NewAuction;
 import com.revature.ePort.auctionshowing.dtos.responses.ActiveAuctions;
 import com.revature.ePort.auctionshowing.dtos.responses.UserAuctions;
@@ -23,13 +26,13 @@ public class AuctionService {
         this.auctionRepository = auctionRepository;
     }
 
-    public List<ActiveAuctions> getAllActive(){
+    public List<ActiveAuctions> getAllActive()  {
         return auctionRepository.activeAuctions();
     }
 
-    /*public List<UserAuctions> getAllUserAuctions(String userID){
+    public List<UserAuctions> getAllUserAuctions(String userID){
         return auctionRepository.userAuctions(userID);
-    }*/
+    }
 
     public void insertNewAuction(NewAuction newAuction){
         if(newAuction.getStartingDate().equals(null))
