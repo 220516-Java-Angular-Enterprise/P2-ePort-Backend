@@ -3,12 +3,12 @@ package com.revature.ePort.auctionshowing.dtos.requests;
 import java.sql.Timestamp;
 
 public class NewAuction {
+    private String title;
     private int buyOut=0;
     private int startingBid=0;
     private boolean status;
     private Timestamp startingDate;
     private Timestamp expiration;
-    private String title;
     private String scp_id;
     private String user_id;
 

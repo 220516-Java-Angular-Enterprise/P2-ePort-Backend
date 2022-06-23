@@ -7,6 +7,9 @@ public class ViewBidHistory {
     private boolean auction_status;
     private double amount;
 
+    public ViewBidHistory() {
+    }
+
     public ViewBidHistory(String title, String auction_showing_id, boolean auction_status, double amount) {
         this.title = title;
         this.auction_showing_id = auction_showing_id;
