@@ -30,7 +30,7 @@ public class AuctionController {
     List<ActiveAuctions> activeAutions(){return auctionService.getAllActive();}
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(path = "/userActive", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/userAuctions", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     List<UserAuctions> userAuctions(@RequestBody String userid){
         return auctionService.getAllUserAuctions(userid);

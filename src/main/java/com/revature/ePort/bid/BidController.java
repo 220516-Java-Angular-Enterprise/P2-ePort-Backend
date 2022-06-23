@@ -24,13 +24,13 @@ public class BidController {
         this.bidService = bidService;
     }
 
-    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/newBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     NewBid addNewBid(@RequestBody NewBid newBid){
         return bidService.addNewBid(newBid);
     }
 
-    @PutMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/updateBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody void updateBid(@RequestBody NewBid updateBid){
         bidService.updateBid(updateBid);
     }
