@@ -87,7 +87,7 @@ public class UserService {
         //todo make this check have more info, or use the oauth from google
         if(editUser.getEmail() != null && !isValidEmail(user.getEmail())) throw new InvalidRequestException("Invalid email, must be a valid email address");
 
-        userRepository.updateUser(user.getUsername(),user.getCodename(),user.getEmail(),user.getPaymentID(),user.getShippingAddress(),user.getFunds(),editUser.getUserID());
+        //userRepository.updateUser(user.getUsername(),user.getCodename(),user.getEmail(),user.getPaymentID(),user.getShippingAddress(),user.getFunds(),editUser.getUserID());
         if(editUser.getPassword() != null && isValidPassword(editUser.getPassword())){
             userRepository.encryptPassword(editUser.getPassword(),editUser.getUserID());
         }else if(editUser.getPassword() != null)throw new InvalidRequestException("Invalid password, must be longer than 8 characters and contain one number, one special character, and one alphabetical character");

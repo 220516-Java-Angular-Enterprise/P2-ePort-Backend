@@ -22,4 +22,7 @@ public interface BidRepository extends CrudRepository<Bid, String> {
 
     @Query(value = "select * from bid where user_id =?1",nativeQuery = true)
     List<ViewBidHistory> bidHistory(String userID);
+
+    /*List<Bid> findByIdAuctionShowingID(String auctionShowingID);
+    List<Bid> findByIdUserID(String userID);*/
 }

@@ -1,5 +1,7 @@
 package com.revature.ePort.auctionshowing;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.ePort.bid.Bid;
 import com.revature.ePort.scp.SCP;
 import com.revature.ePort.user.User;
@@ -27,13 +29,22 @@ public class AuctionShowing {
     private int startingBid;
     @Column(name = "buyoutBid", nullable = false)
     private int buyoutBid;
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+
+    @Column(name = "number_of_bids", nullable = false)
+    private int numberOfBids;
+
     @OneToOne
     @JoinColumn(name = "SCP_ID", referencedColumnName = "id",nullable = false)
+    @JsonManagedReference
     private SCP scp;
-    @OneToMany(mappedBy = "auctionShowing")
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
+
+    @OneToMany(mappedBy = "auctionShowing", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Bid> bids;
 
 
