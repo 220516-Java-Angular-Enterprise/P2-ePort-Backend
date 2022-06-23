@@ -1,5 +1,7 @@
 package com.revature.ePort.scp;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.revature.ePort.auctionshowing.AuctionShowing;
 import com.revature.ePort.scptag.SCPTag;
 
@@ -10,18 +12,19 @@ import java.util.List;
 @Table(name = "scp")
 public class SCP {
 
-    //todo look up how to create a blob object in java or how JPA handles blob objects
+    //todo set img to string because it will hold the img url instead
 
     @Id
     private String id;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     private String description;
     @Column(name = "img", nullable = false)
-    private byte[] img;
+    private String img;
 
     @OneToOne(mappedBy = "scp")
+    @JsonBackReference
     private AuctionShowing auctionShowing;
     @OneToMany(mappedBy = "scp")
     private List<SCPTag> scpTags;
@@ -31,7 +34,7 @@ public class SCP {
         super();
     }
 
-    public SCP(String id, String name, String description, byte[] img) {
+    public SCP(String id, String name, String description, String img) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -62,11 +65,11 @@ public class SCP {
         this.description = description;
     }
 
-    public byte[] getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(byte[] img) {
+    public void setImg(String img) {
         this.img = img;
     }
 

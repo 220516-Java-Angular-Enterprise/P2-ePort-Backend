@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import javax.transaction.Transactional;
 
 @Transactional
-public interface OrderRepository extends CrudRepository<NewOrder, String> {
+public interface OrderRepository extends CrudRepository<Order, String> {
 
     @Query(value = "insert into eport.order values(?1,current_date+30, current_date+15,'shipping',?2)", nativeQuery = true)
     public void newOrder(String id, String shippingAddress);

@@ -12,6 +12,10 @@ public class BidID implements Serializable {
     @Column(name = "user_id", nullable = false)
     private String userID;
 
+    public BidID() {
+        super();
+    }
+
     public BidID(String auctionShowingID, String userID) {
         this.auctionShowingID = auctionShowingID;
         this.userID = userID;

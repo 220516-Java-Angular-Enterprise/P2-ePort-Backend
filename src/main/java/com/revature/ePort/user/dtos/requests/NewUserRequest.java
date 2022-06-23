@@ -2,6 +2,7 @@ package com.revature.ePort.user.dtos.requests;
 
 import com.revature.ePort.user.User;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class NewUserRequest {
@@ -81,7 +82,7 @@ public class NewUserRequest {
         user.setShippingAddress(shippingAddress);
         user.setActive(false);
         user.setRole("DEFAULT");
-        user.setFunds(0);
+        user.setFunds(BigDecimal.valueOf(0));
         return user;
     }
 }
