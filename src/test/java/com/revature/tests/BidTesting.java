@@ -5,6 +5,7 @@ import com.revature.ePort.auctionshowing.AuctionService;
 import com.revature.ePort.auctionshowing.AuctionShowing;
 import com.revature.ePort.auctionshowing.dtos.responses.ActiveAuctions;
 import com.revature.ePort.auctionshowing.dtos.responses.UserAuctions;
+import com.revature.ePort.bid.Bid;
 import com.revature.ePort.bid.BidRepository;
 import com.revature.ePort.bid.BidService;
 import com.revature.ePort.bid.dtos.responses.ViewBidHistory;
@@ -23,7 +24,7 @@ public class BidTesting {
 
     private BidRepository bidRepositoryMock;
     private BidService bidService;
-    ViewBidHistory viewBidHistoryMock = new ViewBidHistory();
+    Bid viewBidHistoryMock = new Bid();
 
     @Before
     public void setup(){
@@ -33,14 +34,14 @@ public class BidTesting {
 
     @Test
     public void viewAcceptedBidHistory(){
-        List<ViewBidHistory> bidHistoryList = List.of(viewBidHistoryMock);
+        List<Bid> bidHistoryList = List.of(viewBidHistoryMock);
         when(bidRepositoryMock.bidHistory("c7b43bf5-ae0b-4bc8-95f1-ff80e0b75513")).thenReturn(bidHistoryList);
         Assert.assertEquals(bidRepositoryMock.bidHistory("c7b43bf5-ae0b-4bc8-95f1-ff80e0b75513"), bidHistoryList);
     }
 
     @Test
     public void viewEmptyBidHistory(){
-        List<ViewBidHistory> bidHistoryList = List.of(viewBidHistoryMock);
+        List<Bid> bidHistoryList = List.of(viewBidHistoryMock);
         when(bidRepositoryMock.bidHistory("")).thenReturn(bidHistoryList);
         Assert.assertNotEquals(bidRepositoryMock.bidHistory("c7b43bf5-ae0b-4bc8-95f1-ff80e0b75513"), bidHistoryList);
     }

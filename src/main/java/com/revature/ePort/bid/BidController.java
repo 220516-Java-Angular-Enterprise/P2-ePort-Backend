@@ -31,10 +31,17 @@ public class BidController {
         this.bidService = bidService;
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(value = "/{userid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody List<Bid> bidHistoryList(@PathVariable String userid){
+        return bidService.bidHistoryList(userid);
+    }
+
     @PostMapping(path = "/newBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     NewBid addNewBid(@RequestBody NewBid newBid){
-        return bidService.addNewBid(newBid);
+        bidService.addNewBid(newBid);
+        return newBid;
     }
 
     @PutMapping(path = "/updateBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,10 +49,7 @@ public class BidController {
         bidService.updateBid(updateBid);
     }
 
-    @GetMapping(path = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody List<ViewBidHistory> bidHistoryList(@RequestBody String userID){
-        return bidService.bidHistoryList(userID);
-    }
+
 
     //region Exception Handlers
     @ExceptionHandler

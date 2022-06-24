@@ -1,9 +1,12 @@
 package com.revature.ePort.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.ePort.auctionshowing.AuctionShowing;
 import com.revature.ePort.bid.Bid;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 
@@ -11,6 +14,7 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
+    //todo lat long in database
     @Id
     private String id;
     @Column(name = "username", nullable = false)
@@ -26,16 +30,18 @@ public class User {
     @Column(name = "shippingAddress", nullable = false)
     private String shippingAddress;
     @Column(name = "funds", nullable = false)
-    private int funds;
+    private BigDecimal funds;
     @Column(name = "paymentID")
     private String paymentID;
     @Column(name = "isActive", nullable = false)
     private boolean isActive;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Bid> bids;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<AuctionShowing> auctionShowings;
 
 
@@ -106,11 +112,11 @@ public class User {
         this.shippingAddress = shippingAddress;
     }
 
-    public int getFunds() {
+    public BigDecimal getFunds() {
         return funds;
     }
 
-    public void setFunds(int funds) {
+    public void setFunds(BigDecimal funds) {
         this.funds = funds;
     }
 
@@ -146,21 +152,5 @@ public class User {
         this.auctionShowings = auctionShowings;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", email='" + email + '\'' +
-                ", codename='" + codename + '\'' +
-                ", shippingAddress='" + shippingAddress + '\'' +
-                ", funds=" + funds +
-                ", paymentID='" + paymentID + '\'' +
-                ", isActive=" + isActive +
-                ", bids=" + bids +
-                ", auctionShowings=" + auctionShowings +
-                '}';
-    }
+
 }

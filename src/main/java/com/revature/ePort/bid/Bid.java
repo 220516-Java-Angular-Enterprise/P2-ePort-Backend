@@ -1,5 +1,7 @@
 package com.revature.ePort.bid;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.ePort.auctionshowing.AuctionShowing;
 import com.revature.ePort.order.Order;
 import com.revature.ePort.user.User;
@@ -22,14 +24,17 @@ public class Bid {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderID", referencedColumnName = "id")
+    @JsonManagedReference
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "auction_showing_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     private AuctionShowing auctionShowing;
 
     public Bid() {

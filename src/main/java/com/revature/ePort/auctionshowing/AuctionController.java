@@ -34,12 +34,12 @@ public class AuctionController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    List<ActiveAuctions> activeAutions(){return auctionService.getAllActive();}
+    List<AuctionShowing> activeAutions(){return auctionService.getAllActive();}
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(path = "/userAuctions", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{userid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    List<UserAuctions> userAuctions(@RequestBody String userid){
+    List<AuctionShowing> userAuctions(@PathVariable String userid){
         return auctionService.getAllUserAuctions(userid);
     }
 
@@ -47,6 +47,7 @@ public class AuctionController {
     @PostMapping(path = "/newAuction", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     NewAuction insertAuction(@RequestBody NewAuction newAuction){
+        System.out.println(newAuction.getStartingDate());
         auctionService.insertNewAuction(newAuction);
         return newAuction;
     }

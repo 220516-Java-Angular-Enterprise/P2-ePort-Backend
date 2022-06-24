@@ -1,5 +1,6 @@
 package com.revature.ePort.order;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.revature.ePort.bid.Bid;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Order {
     private String shippedAddress;
 
     @OneToOne(mappedBy = "order")
+    @JsonBackReference
     private Bid bid;
 
     public Order() {

@@ -23,7 +23,7 @@ public class AuctionTesting {
     private AuctionRepository auctionRepositoryMock;
     private AuctionService  auctionService;
     ActiveAuctions activeAuctionsMock = new ActiveAuctions();
-    UserAuctions userAuctionsMock = new UserAuctions();
+    AuctionShowing userAuctionsMock = new AuctionShowing();
     NewAuction newAuction = new NewAuction();
 
     @Before
@@ -34,14 +34,14 @@ public class AuctionTesting {
 
     @Test
     public void testWorkingUserAuctions(){
-        List<UserAuctions> userAuctionsList = List.of(userAuctionsMock);
+        List<AuctionShowing> userAuctionsList = List.of(userAuctionsMock);
         when(auctionRepositoryMock.userAuctions("c7b43bf5-ae0b-4bc8-95f1-ff80e0b75513")).thenReturn(userAuctionsList);
         Assert.assertEquals(auctionRepositoryMock.userAuctions("c7b43bf5-ae0b-4bc8-95f1-ff80e0b75513"), userAuctionsList);
     }
 
     @Test
     public void testEmptyUserAuctions(){
-        List<UserAuctions> userAuctionsList = List.of(userAuctionsMock);
+        List<AuctionShowing> userAuctionsList = List.of(userAuctionsMock);
         when(auctionRepositoryMock.userAuctions("")).thenReturn(userAuctionsList);
         Assert.assertNotEquals(auctionRepositoryMock.userAuctions("c7b43bf5-ae0b-4bc8-95f1-ff80e0b75513"), userAuctionsList);
     }

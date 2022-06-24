@@ -2,6 +2,9 @@ package com.revature.ePort.user.dtos.requests;
 
 import com.revature.ePort.user.User;
 
+import java.math.BigDecimal;
+
+
 public class EditUser {
     private String userID;
     private String username;
@@ -10,7 +13,7 @@ public class EditUser {
     private String paymentID;
     private String shippingAddress;
     private String email;
-    private int funds;
+    private BigDecimal funds;
 
     public EditUser() {
         super();
@@ -72,11 +75,11 @@ public class EditUser {
         this.email = email;
     }
 
-    public int getFunds() {
+    public BigDecimal getFunds() {
         return funds;
     }
 
-    public void setFunds(int funds) {
+    public void setFunds(BigDecimal funds) {
         this.funds = funds;
     }
 
@@ -88,7 +91,7 @@ public class EditUser {
         if(email != null)user.setEmail(email);
         if(paymentID != null)user.setPaymentID(paymentID);
         if(shippingAddress != null)user.setShippingAddress(shippingAddress);
-        if(funds != 0)user.setFunds(user.getFunds() + funds);
+        if(funds.equals(0))user.setFunds(user.getFunds().add(funds));
         return user;
     }
 }
