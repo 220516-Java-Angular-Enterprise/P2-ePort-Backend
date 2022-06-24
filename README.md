@@ -2,9 +2,8 @@
 
 ### Admin User Story: Adding a new product
 Admin logs in to ePort clicks on the add new product button, then types in the scp number of the creature they want, and will get back the creature if found or 404 message if not found, if found the scp creature will be stored in the data base with most/all of its parameters.
-
-## User HTTP Verbs
 ---
+## User HTTP Verbs
 ### Post
 1. Create new user /ePort/users 
 ```java
@@ -69,3 +68,24 @@ return User user
 ```java
 return List<User> userList
 ```
+---
+## SCP HTTP Verbs
+### Post
+1. Create SCP /ePort/scp
+```java
+return String scpName
+```
+```jsonc
+{
+    "name": "scp-1006" //Non null, must be valid scp name
+}
+```
+### Get
+1. Get SCP by name /ePort/scp/{scp name value here}
+```java
+return SCP scp
+```
+---
+## Auth
+### Post
+1. Get authentication token
