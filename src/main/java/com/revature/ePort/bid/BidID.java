@@ -20,4 +20,6 @@ public class BidID implements Serializable {
         this.auctionShowingID = auctionShowingID;
         this.userID = userID;
     }
+
 }
+

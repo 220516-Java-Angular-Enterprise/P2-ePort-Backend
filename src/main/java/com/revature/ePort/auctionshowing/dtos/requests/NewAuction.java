@@ -3,12 +3,12 @@ package com.revature.ePort.auctionshowing.dtos.requests;
 import java.sql.Timestamp;
 
 public class NewAuction {
+    private String title;
     private int buyOut=0;
     private int startingBid=0;
     private boolean status;
-    private Timestamp startingDate;
-    private Timestamp expiration;
-    private String title;
+    private String startingDate;
+    private String expiration;
     private String scp_id;
     private String user_id;
 
@@ -17,7 +17,7 @@ public class NewAuction {
 
     }
 
-    public NewAuction(int buyOut, int startingBid, Timestamp startingDate, Timestamp expiration, String title, String scp_id, String user_id) {
+    public NewAuction(int buyOut, int startingBid, String startingDate, String expiration, String title, String scp_id, String user_id) {
         this.buyOut = buyOut;
         this.startingBid = startingBid;
         this.startingDate = startingDate;
@@ -43,19 +43,19 @@ public class NewAuction {
         this.startingBid = startingBid;
     }
 
-    public Timestamp getStartingDate() {
+    public String getStartingDate() {
         return startingDate;
     }
 
-    public void setStartingDate(Timestamp startingDate) {
+    public void setStartingDate(String startingDate) {
         this.startingDate = startingDate;
     }
 
-    public Timestamp getExpiration() {
+    public String getExpiration() {
         return expiration;
     }
 
-    public void setExpiration(Timestamp expiration) {
+    public void setExpiration(String expiration) {
         this.expiration = expiration;
     }
 

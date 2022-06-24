@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
+
 @Service
 public class BidService {
     @Inject
@@ -21,15 +21,15 @@ public class BidService {
         this.bidRepository = bidRepository;
     }
 
-    public NewBid addNewBid(NewBid newBid){
-        return bidRepository.addNewBid(newBid.getAuction_id(), newBid.getUser_id(),newBid.getAmount());
+    public void addNewBid(NewBid newBid){
+        bidRepository.addNewBid(newBid.getAuction_id(), newBid.getUser_id(),newBid.getAmount());
     }
 
     public void updateBid(NewBid updateBid){
         bidRepository.updateBid(updateBid.getAmount(),updateBid.getUser_id(),updateBid.getAuction_id());
     }
 
-    public List<ViewBidHistory> bidHistoryList(String userID){
+    public List<Bid> bidHistoryList(String userID){
         return bidRepository.bidHistory(userID);
     }
 }

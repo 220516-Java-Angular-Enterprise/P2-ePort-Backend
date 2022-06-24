@@ -35,10 +35,11 @@ public class AuctionService {
     }
 
     public void insertNewAuction(NewAuction newAuction){
-        if(newAuction.getStartingDate() == null)
-            newAuction.setStartingDate(new Timestamp(System.currentTimeMillis()));
-        else newAuction.setStatus(!newAuction.getStartingDate().after(Timestamp.valueOf(String.valueOf(System.currentTimeMillis()))));
-        auctionRepository.newAuction(UUID.randomUUID().toString(), newAuction.getStatus(),newAuction.getBuyOut(), newAuction.getExpiration(), newAuction.getStartingBid()
-                                    ,newAuction.getStartingDate(), newAuction.getTitle(),newAuction.getScp_id(),newAuction.getUser_id());
+        Timestamp startingDate = Timestamp.valueOf(newAuction.getStartingDate().replaceAll("[A-Z]", " "));
+        Timestamp expiration = Timestamp.valueOf(newAuction.getExpiration().replaceAll("[A-Z]", " "));
+        System.out.println(newAuction.getStartingDate());
+        //newAuction.setStatus(!startingDate.after(Timestamp.valueOf(String.valueOf(System.currentTimeMillis()))));
+        auctionRepository.newAuction(UUID.randomUUID().toString(), newAuction.getStatus(),newAuction.getBuyOut(), expiration, newAuction.getStartingBid()
+                                    ,startingDate, newAuction.getTitle(),newAuction.getScp_id(),newAuction.getUser_id());
     }
 }
