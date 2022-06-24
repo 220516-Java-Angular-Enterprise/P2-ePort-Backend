@@ -7,14 +7,14 @@ Admin logs in to ePort clicks on the add new product button, then types in the s
 ---
 ### Post
 1. Create new user /ePort/users
-```json
+```jsonc
 {
-"username": "auctionUser001",
-"password": "P@ssw0rd",
-"codename": "codename",
-"paymentID": "paymentID",
-"shippingAddress": "shippingAddress",
-"email": "User@gmail.com"
+"username": "auctionUser001", //Non-null, must be 8-20 characters
+"password": "P@ssw0rd", //Non-null, must be 8 or more characters and have a number and special character
+"codename": "codename", //Non-null
+"paymentID": "paymentID", //Non-null
+"shippingAddress": "shippingAddress", //Non-null
+"email": "User@gmail.com" //Non-null, must be a valid email name followed by @ followed by the email domain name
 }
 ```
 
