@@ -63,9 +63,10 @@ public class UserService {
     }
 
     public void enableUser(ActivateUser activateUser){
-        if(activateUser.getUserID() == null) throw new InvalidRequestException("Invalid request, user ID is null");
-        if(!userIDExists(activateUser.getUserID())) throw new InvalidRequestException("Invalid user ID");
-        userRepository.updateUserStatus(activateUser.isActive(), activateUser.getUserID());
+        if(activateUser.getId() == null) throw new InvalidRequestException("Invalid request, user ID is null");
+        if(!userIDExists(activateUser.getId())) throw new InvalidRequestException("Invalid user ID");
+        System.out.println(activateUser.getIsActive() +"");
+        userRepository.updateUserStatus(activateUser.getIsActive(), activateUser.getId());
     }
 
     public User getUserByUsername(String username){
@@ -79,7 +80,7 @@ public class UserService {
     }
 
     public void updateUser(EditUser editUser){
-        User user = userRepository.getUserbyID(editUser.getUserID());
+        User user = userRepository.getUserbyID(editUser.getId());
         if(user == null) throw new ResourceConflictException("Invalid user id");
         if(editUser.getUsername() != null && editUser.getUsername().equals(user.getUsername()) && userExists(user.getUsername())) throw new ResourceConflictException("This username is already taken");
         editUser.updateUser(user);
@@ -89,12 +90,12 @@ public class UserService {
 
         //userRepository.updateUser(user.getUsername(),user.getCodename(),user.getEmail(),user.getPaymentID(),user.getShippingAddress(),user.getFunds(),editUser.getUserID());
         if(editUser.getPassword() != null && isValidPassword(editUser.getPassword())){
-            userRepository.encryptPassword(editUser.getPassword(),editUser.getUserID());
+            userRepository.encryptPassword(editUser.getPassword(),editUser.getId());
         }else if(editUser.getPassword() != null)throw new InvalidRequestException("Invalid password, must be longer than 8 characters and contain one number, one special character, and one alphabetical character");
     }
 
     public void deleteUser(ActivateUser activateUser){
-        if(userRepository.deleteUser(activateUser.getUserID()) == 0) throw new InvalidRequestException("Invalid request, user does not exist or is active");
+        if(userRepository.deleteUser(activateUser.getId()) == 0) throw new InvalidRequestException("Invalid request, user does not exist or is active");
     }
 
     private String nullChecker(NewUserRequest request){
