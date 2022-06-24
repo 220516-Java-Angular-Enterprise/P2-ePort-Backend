@@ -29,7 +29,14 @@ public class SCPController {
     @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String createSCP(SCPOut scpOut){
-        return scpService.createSCP("scp-007");
+    public @ResponseBody String createSCP(@RequestBody SCPOut scpOut){
+        return scpService.createSCP(scpOut.getName());
+    }
+
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody SCP getSCP(@PathVariable String name){
+        return scpService.findSCPByName(name);
     }
 }
