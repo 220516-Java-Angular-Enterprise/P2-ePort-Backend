@@ -33,6 +33,8 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
         Principal principal = new Principal(userService.login(request));
