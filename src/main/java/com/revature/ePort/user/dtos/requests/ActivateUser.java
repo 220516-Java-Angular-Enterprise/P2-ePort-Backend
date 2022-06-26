@@ -2,26 +2,26 @@ package com.revature.ePort.user.dtos.requests;
 
 public class ActivateUser {
 
-    private String userID;
-    private boolean active = false;
+    private String id;
+    private boolean isActive = false;
 
     public ActivateUser() {
         super();
     }
 
-    public String getUserID() {
-        return userID;
+    public String getId() {
+        return id;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean getIsActive() {
+        return isActive;
     }
 
     public void setActive(boolean active) {
-        this.active = active;
+        isActive = active;
     }
 }

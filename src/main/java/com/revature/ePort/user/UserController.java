@@ -1,5 +1,7 @@
 package com.revature.ePort.user;
 
+import com.revature.ePort.auth.TokenService;
+import com.revature.ePort.auth.dtos.response.Principal;
 import com.revature.ePort.user.dtos.requests.ActivateUser;
 import com.revature.ePort.user.dtos.requests.EditUser;
 import com.revature.ePort.user.dtos.requests.NewUserRequest;
@@ -24,12 +26,18 @@ public class UserController {
 
     @Inject
     private final UserService userService;
+    @Inject
+    private final TokenService tokenService;
 
     @Inject
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
+
+
+
 
 
     //region HTTP Post methods
@@ -46,13 +54,6 @@ public class UserController {
         return userService.register(newUserRequest).getId();
     }
 
-    @CrossOrigin
-    @RequestMapping("/user")
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody User getUser(@RequestBody NewUserRequest newUserRequest){
-        return userService.getUserByUsername(newUserRequest.getUsername());
-    }
     //endregion
 
     //region HTTP Put methods
@@ -85,15 +86,24 @@ public class UserController {
     //region HTTP Get methods
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody User getUser(@PathVariable String username){
+        return userService.getUserByUsername(username);
+    }
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<User> getAllUsers(){
+    public @ResponseBody List<User> getAllUsers(@RequestHeader("Authorization") String token){
+        Principal requester = tokenService.extractRequesterDetails(token);
+        if(requester == null) throw new UnauthorizedException("No authorization found");
+        if(!requester.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
         return userService.getAllUsers();
     }
     //endregion
 
     //region Exception Handlers
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public @ResponseBody Map<String, Object> handleUnauthorizedException(UnauthorizedException e){
         Map<String, Object> responseBody = new LinkedHashMap<>();
         responseBody.put("status", 401);

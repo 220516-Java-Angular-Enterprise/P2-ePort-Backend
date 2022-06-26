@@ -1,8 +1,11 @@
 package com.revature.ePort.tag;
 
-import com.revature.ePort.scptag.SCPTag;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.revature.ePort.scp.SCP;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -10,12 +13,14 @@ import java.util.List;
 public class Tag {
 
     @Id
+    @JsonIgnore
     private String id;
     @Column(name = "tagName", nullable = false)
     private String tagName;
 
-    @OneToMany(mappedBy = "scp")
-    private List<SCPTag> scpTags;
+    @ManyToMany(mappedBy = "tag")
+    @JsonIgnore
+    private List<SCP> scp = new ArrayList<>();
 
     public Tag() {
         super();
@@ -37,11 +42,11 @@ public class Tag {
         this.tagName = tagName;
     }
 
-    public List<SCPTag> getScpTags() {
-        return scpTags;
+    public List<SCP> getScp() {
+        return scp;
     }
 
-    public void setScpTags(List<SCPTag> scpTags) {
-        this.scpTags = scpTags;
+    public void setScp(List<SCP> scp) {
+        this.scp = scp;
     }
 }

@@ -1,14 +1,13 @@
 package com.revature.ePort.scp;
 
-import com.doomedcat17.scpier.ScpFoundationDataProvider;
+
 import com.doomedcat17.scpier.data.content.ContentNode;
 import com.doomedcat17.scpier.data.content.ContentNodeType;
 import com.doomedcat17.scpier.data.content.ParagraphNode;
-import com.doomedcat17.scpier.data.content.TextNode;
-import com.doomedcat17.scpier.data.scp.SCPBranch;
 import com.doomedcat17.scpier.data.scp.ScpWikiData;
 import com.doomedcat17.scpier.exception.SCPierApiException;
-import com.revature.ePort.user.UserRepository;
+import com.revature.ePort.tag.Tag;
+import com.revature.ePort.tag.TagService;
 import com.revature.ePort.util.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,23 +24,19 @@ public class SCPService {
     @Inject
     private final SCPRepository scpRepository;
     private final SCPierWrapper scPierWrapper;
+    private final TagService tagService;
 
-
-    //private final ScpFoundationDataProvider scpFoundationDataProvider;
-
-   /* @Inject
-    @Autowired
-    public SCPService(SCPRepository scpRepository) {
-        this.scpRepository = scpRepository;
-    }*/
 
     @Inject
     @Autowired
-    public SCPService(SCPRepository scpRepository, SCPierWrapper scPierWrapper) {
+    public SCPService(SCPRepository scpRepository, SCPierWrapper scPierWrapper, TagService tagService) {
         this.scpRepository = scpRepository;
         this.scPierWrapper = scPierWrapper;
+        this.tagService = tagService;
     }
 
+
+    //todo validation check for duplicate scp name
     public String createSCP(String name){
         try {
             ScpWikiData scpData = scPierWrapper.getScpWikiData(name);
@@ -51,11 +46,23 @@ public class SCPService {
             scp.setName(scpData.getName());
             scp.setImg(getSCPImage(content));
             scp.setDescription(getSCPDescription(content));
+
+            scp.getTag().addAll(scpData.getTags().stream().filter(tag -> !(tag.charAt(0) == '_')).map(tag -> {
+                Tag t = tagService.checkTag(tag);
+                if(t == null){t = tagService.registerTag(tag);}
+                t.getScp().add(scp);
+                return t;
+                }).collect(Collectors.toList()));
+
             scpRepository.save(scp);
             return scp.getName();
         } catch (SCPierApiException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public SCP findSCPByName(String name){
+        return scpRepository.findScpByName(name);
     }
 
     private String getSCPImage(List<ContentNode<?>> contentNodeList){

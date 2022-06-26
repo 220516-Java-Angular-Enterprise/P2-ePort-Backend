@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 
 public class EditUser {
-    private String userID;
+    private String id;
     private String username;
     private String password;
     private String codename;
@@ -19,12 +19,12 @@ public class EditUser {
         super();
     }
 
-    public String getUserID() {
-        return userID;
+    public String getId() {
+        return id;
     }
 
-    public void setUserID(String usedID) {
-        this.userID = usedID;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {

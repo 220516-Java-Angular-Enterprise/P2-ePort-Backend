@@ -3,9 +3,10 @@ package com.revature.ePort.scp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.revature.ePort.auctionshowing.AuctionShowing;
-import com.revature.ePort.scptag.SCPTag;
+import com.revature.ePort.tag.Tag;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +27,16 @@ public class SCP {
     @OneToOne(mappedBy = "scp")
     @JsonBackReference
     private AuctionShowing auctionShowing;
-    @OneToMany(mappedBy = "scp")
-    private List<SCPTag> scpTags;
+
+    /*@OneToMany(mappedBy = "scp")
+    @JsonManagedReference*/
+    @ManyToMany
+    @JoinTable(
+            name = "scp_tags",
+            joinColumns = @JoinColumn(name = "scp_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tag = new ArrayList<>();
 
 
     public SCP() {
@@ -81,11 +90,11 @@ public class SCP {
         this.auctionShowing = auctionShowing;
     }
 
-    public List<SCPTag> getScpTags() {
-        return scpTags;
+    public List<Tag> getTag() {
+        return tag;
     }
 
-    public void setScpTags(List<SCPTag> scpTags) {
-        this.scpTags = scpTags;
+    public void setTag(List<Tag> tag) {
+        this.tag = tag;
     }
 }
