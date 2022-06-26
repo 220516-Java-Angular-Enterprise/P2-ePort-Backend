@@ -14,7 +14,6 @@ import java.util.List;
 @Transactional
 public interface BidRepository extends CrudRepository<Bid, String> {
 
-
     @Query(value = "insert into bid values(?1,?2,?3,true)", nativeQuery = true)
     void addNewBid(String auctionID, String userID, int amount);
 
@@ -24,6 +23,13 @@ public interface BidRepository extends CrudRepository<Bid, String> {
 
     @Query(value = "select * from bid where user_id =?1",nativeQuery = true)
     List<Bid> bidHistory(String userID);
+
+    @Query(value = "select scp_id from auction_showing where id = ?1 and user_id = ?2",nativeQuery = true)
+    String auctionExists(String auctionShowingID, String userID);
+
+    @Query(value = "select max(amount) from bid where auction_showing_id=?1",nativeQuery = true)
+    int maxAmount(String auctionID);
+
 
     /*List<Bid> findByIdAuctionShowingID(String auctionShowingID);
     List<Bid> findByIdUserID(String userID);*/

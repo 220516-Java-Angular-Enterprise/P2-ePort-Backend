@@ -19,6 +19,15 @@ public class NewUserRequest {
         super();
     }
 
+    public NewUserRequest(String username, String password, String codename, String paymentID, String shippingAddress, String email) {
+        this.username = username;
+        this.password = password;
+        this.codename = codename;
+        this.paymentID = paymentID;
+        this.shippingAddress = shippingAddress;
+        this.email = email;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -69,6 +78,19 @@ public class NewUserRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "NewUserRequest{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", codename='" + codename + '\'' +
+                ", paymentID='" + paymentID + '\'' +
+                ", shippingAddress='" + shippingAddress + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
     public User extractUser(){
