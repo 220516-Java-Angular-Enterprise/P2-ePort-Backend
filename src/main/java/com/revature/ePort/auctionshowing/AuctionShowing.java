@@ -7,6 +7,7 @@ import com.revature.ePort.scp.SCP;
 import com.revature.ePort.user.User;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -26,12 +27,12 @@ public class AuctionShowing {
     @Column(name = "expirationDate", nullable = false)
     private Timestamp expirationDate;
     @Column(name = "startingBid", nullable = false)
-    private int startingBid;
+    private BigDecimal startingBid;
     @Column(name = "buyoutBid", nullable = false)
-    private int buyoutBid;
+    private BigDecimal buyoutBid;
 
     @Column(name = "number_of_bids", nullable = false)
-    private int numberOfBids;
+    private BigDecimal numberOfBids;
 
     @OneToOne
     @JoinColumn(name = "SCP_ID", referencedColumnName = "id",nullable = false)
@@ -93,19 +94,19 @@ public class AuctionShowing {
         this.expirationDate = expirationDate;
     }
 
-    public int getStartingBid() {
+    public BigDecimal getStartingBid() {
         return startingBid;
     }
 
-    public void setStartingBid(int startingBid) {
+    public void setStartingBid(BigDecimal startingBid) {
         this.startingBid = startingBid;
     }
 
-    public int getBuyoutBid() {
+    public BigDecimal getBuyoutBid() {
         return buyoutBid;
     }
 
-    public void setBuyoutBid(int buyoutBid) {
+    public void setBuyoutBid(BigDecimal buyoutBid) {
         this.buyoutBid = buyoutBid;
     }
 
