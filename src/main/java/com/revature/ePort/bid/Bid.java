@@ -7,6 +7,7 @@ import com.revature.ePort.order.Order;
 import com.revature.ePort.user.User;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "bid")
@@ -18,7 +19,7 @@ public class Bid {
     private BidID bidID;
 
     @Column(name = "amount", nullable = false)
-    private int amount;
+    private BigDecimal amount;
     @Column(name = "bidStatus", nullable = false)
     private boolean bidStatus;
 
@@ -49,11 +50,11 @@ public class Bid {
         this.bidID = bidID;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

@@ -1,15 +1,17 @@
 package com.revature.ePort.bid.dtos.requests;
 
+import java.math.BigDecimal;
+
 public class NewBid {
 
     private String auction_id;
     private String user_id;
-    private int amount;
+    private BigDecimal amount;
 
     public NewBid() {
     }
 
-    public NewBid(String auction_id, String user_id, int amount) {
+    public NewBid(String auction_id, String user_id, BigDecimal amount) {
         this.auction_id = auction_id;
         this.user_id = user_id;
         this.amount = amount;
@@ -31,11 +33,11 @@ public class NewBid {
         this.user_id = user_id;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -43,16 +44,18 @@ public class BidTesting {
 
     @Test
     public void invalidBidAmount(){
-        int maxAmount = 0;
+        BigDecimal maxAmount = new BigDecimal(0);
         when(bidRepositoryMock.maxAmount("9f61db4f-6bf6-4518-bb17-24e1843e147d")).thenReturn(maxAmount);
-        newBid = new NewBid("9f61db4f-6bf6-4518-bb17-24e1843e147d", "dc200531-8797-4abb-88f5-21fb23ca15d2", 10);
+        newBid = new NewBid("9f61db4f-6bf6-4518-bb17-24e1843e147d", "dc200531-8797-4abb-88f5-21fb23ca15d2", new BigDecimal(10));
         Assert.assertThrows(ResourceConflictException.class, () -> bidService.updateBid(newBid));
     }
 
     @Test
     public void bidDoesntExists(){
+        BigDecimal maxAmount = new BigDecimal(10);
         when(bidRepositoryMock.auctionExists("9f61db4f-6bf6-4518-bb17-", "dc200531-8797-4abb-88f5-21fb23ca15d2")).thenReturn(String.valueOf(true));
-        newBid = new NewBid("9f61db4f-6bf6-4518-bb17-24e1843e147d", "dc200531-8797-4abb-88f5-21fb23ca15d2", 10);
+        when(bidRepositoryMock.maxAmount("9f61db4f-6bf6-4518-bb17-24e1843e147d")).thenReturn(maxAmount);
+        newBid = new NewBid("9f61db4f-6bf6-4518-bb17-24e1843e147d", "dc200531-8797-4abb-88f5-21fb23ca15d2", new BigDecimal(100));
         Assert.assertThrows(ResourceConflictException.class, () -> bidService.updateBid(newBid));
     }
 

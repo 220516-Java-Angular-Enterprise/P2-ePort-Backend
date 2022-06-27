@@ -38,9 +38,9 @@ public class BidService {
         return bidRepository.auctionExists(auctionID, userID) != null;
     }
 
-    private boolean correctPricing(int num, String auctionID){
-        int i = bidRepository.maxAmount(auctionID);
-        return num > i;
+    private boolean correctPricing(BigDecimal num, String auctionID){
+        BigDecimal i = bidRepository.maxAmount(auctionID);
+        return num.compareTo(i) > 0;
     }
 
     public List<Bid> bidHistoryList(String userID){

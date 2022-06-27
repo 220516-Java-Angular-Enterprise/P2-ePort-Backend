@@ -1,11 +1,12 @@
 package com.revature.ePort.auctionshowing.dtos.requests;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public class NewAuction {
     private String title;
-    private int buyOut=0;
-    private int startingBid=0;
+    private BigDecimal buyOut;
+    private BigDecimal startingBid;
     private boolean status;
     private String startingDate;
     private String expiration;
@@ -17,7 +18,7 @@ public class NewAuction {
 
     }
 
-    public NewAuction(int buyOut, int startingBid, String startingDate, String expiration, String title, String scp_id, String user_id) {
+    public NewAuction(BigDecimal buyOut, BigDecimal startingBid, String startingDate, String expiration, String title, String scp_id, String user_id) {
         this.buyOut = buyOut;
         this.startingBid = startingBid;
         this.startingDate = startingDate;
@@ -27,19 +28,19 @@ public class NewAuction {
         this.user_id = user_id;
     }
 
-    public int getBuyOut() {
+    public BigDecimal getBuyOut() {
         return buyOut;
     }
 
-    public void setBuyOut(int buyOut) {
+    public void setBuyOut(BigDecimal buyOut) {
         this.buyOut = buyOut;
     }
 
-    public int getStartingBid() {
+    public BigDecimal getStartingBid() {
         return startingBid;
     }
 
-    public void setStartingBid(int startingBid) {
+    public void setStartingBid(BigDecimal startingBid) {
         this.startingBid = startingBid;
     }
 

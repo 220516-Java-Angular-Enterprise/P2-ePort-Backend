@@ -1,16 +1,18 @@
 package com.revature.ePort.bid.dtos.responses;
 
+import java.math.BigDecimal;
+
 public class ViewBidHistory {
 
     private String title;
     private String auction_showing_id;
     private boolean auction_status;
-    private double amount;
+    private BigDecimal amount;
 
     public ViewBidHistory() {
     }
 
-    public ViewBidHistory(String title, String auction_showing_id, boolean auction_status, double amount) {
+    public ViewBidHistory(String title, String auction_showing_id, boolean auction_status, BigDecimal amount) {
         this.title = title;
         this.auction_showing_id = auction_showing_id;
         this.auction_status = auction_status;
@@ -51,11 +53,11 @@ public class ViewBidHistory {
         this.auction_status = auction_status;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

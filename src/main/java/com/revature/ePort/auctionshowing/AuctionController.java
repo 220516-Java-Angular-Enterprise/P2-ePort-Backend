@@ -52,6 +52,12 @@ public class AuctionController {
         return newAuction;
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(path = "/sort", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<AuctionShowing> sortedAuctions(){
+        return auctionService.sortAuctions();
+    }
+
     //region Exception Handlers
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
