@@ -1,12 +1,17 @@
 package com.revature.ePort.user;
 
+import com.revature.ePort.util.specifications.UserSpecifications;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends CrudRepository<User, String>, JpaSpecificationExecutor<User> {
 
 
     @Modifying
@@ -42,4 +47,14 @@ public interface UserRepository extends CrudRepository<User, String> {
     @Modifying
     @Query(value = "DELETE FROM users WHERE id = ?1 AND is_active IS NOT TRUE", nativeQuery = true)
     int deleteUser(String id);
+
+    List<User> findAll(Sort sort);
+
+    @Query(value = "SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 'eport' AND TABLE_NAME = 'users'", nativeQuery = true)
+    List<String> getColumnNames();
+
+    /*@Query(value = "SELECT * FROM users u WHERE u.codename LIKE %:filter%", nativeQuery = true)
+    List<User> getUserByFilter(@Param("filter") String filter);*/
+
+    //List<User> getUserByFilter(Specification<User> userSpec);
 }

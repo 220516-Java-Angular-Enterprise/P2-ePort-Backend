@@ -90,6 +90,21 @@ public class UserController {
     public @ResponseBody User getUser(@PathVariable String username){
         return userService.getUserByUsername(username);
     }
+
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{sort}/{columnName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<User> getAllUsersSorted(@PathVariable String sort,@PathVariable String columnName){
+        return userService.sortUsers(sort, columnName);
+    }
+
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/filter/{columnName}/{filter}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody List<User> getAllUsersFiltered(@PathVariable String columnName,@PathVariable String filter){
+        return userService.filterUser(columnName, filter);
+    }
+
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
