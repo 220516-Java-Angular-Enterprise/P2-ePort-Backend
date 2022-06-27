@@ -13,7 +13,6 @@ public class GlobCors implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/ePort/**")
-                .allowedOrigins("http://localhost:4200")
                 .allowedMethods("PUT", "DELETE","GET","POST")
                 .allowedHeaders("header1", "header2", "header3","Authorization")
                 .exposedHeaders("Authorization")

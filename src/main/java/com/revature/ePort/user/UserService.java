@@ -8,11 +8,14 @@ import com.revature.ePort.util.annotations.Inject;
 import com.revature.ePort.util.custom_exception.AuthenticationException;
 import com.revature.ePort.util.custom_exception.InvalidRequestException;
 import com.revature.ePort.util.custom_exception.ResourceConflictException;
+import com.revature.ePort.util.specifications.UserSpecifications;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -63,15 +66,15 @@ public class UserService {
     }
 
     public void enableUser(ActivateUser activateUser){
-        if(activateUser.getId() == null) throw new InvalidRequestException("Invalid request, user ID is null");
-        if(!userIDExists(activateUser.getId())) throw new InvalidRequestException("Invalid user ID");
+        if(activateUser.getId() == null) throw new InvalidRequestException("Invalid request, user ID is null");//404
+        if(!userIDExists(activateUser.getId())) throw new InvalidRequestException("Invalid user ID");//404
         System.out.println(activateUser.getIsActive() +"");
         userRepository.updateUserStatus(activateUser.getIsActive(), activateUser.getId());
     }
 
     public User getUserByUsername(String username){
         User user = userRepository.getUserByUsername(username);
-        if(user == null) throw new InvalidRequestException("User does not exist");
+        if(user == null) throw new InvalidRequestException("User does not exist");//404
         return user;
     }
 
@@ -81,21 +84,37 @@ public class UserService {
 
     public void updateUser(EditUser editUser){
         User user = userRepository.getUserbyID(editUser.getId());
-        if(user == null) throw new ResourceConflictException("Invalid user id");
-        if(editUser.getUsername() != null && editUser.getUsername().equals(user.getUsername()) && userExists(user.getUsername())) throw new ResourceConflictException("This username is already taken");
+        if(user == null) throw new InvalidRequestException("Invalid user id");//404
+        if(editUser.getUsername() != null && editUser.getUsername().equals(user.getUsername()) && userExists(user.getUsername())) throw new ResourceConflictException("This username is already taken");//409
         editUser.updateUser(user);
-        if(!isValidUsername(user.getUsername())) throw new InvalidRequestException("Invalid username, must be 8-20 characters long and no special characters except _ and .");
+        if(!isValidUsername(user.getUsername())) throw new InvalidRequestException("Invalid username, must be 8-20 characters long and no special characters except _ and .");//404
         //todo make this check have more info, or use the oauth from google
-        if(editUser.getEmail() != null && !isValidEmail(user.getEmail())) throw new InvalidRequestException("Invalid email, must be a valid email address");
+        if(editUser.getEmail() != null && !isValidEmail(user.getEmail())) throw new InvalidRequestException("Invalid email, must be a valid email address");//404
 
         //userRepository.updateUser(user.getUsername(),user.getCodename(),user.getEmail(),user.getPaymentID(),user.getShippingAddress(),user.getFunds(),editUser.getUserID());
         if(editUser.getPassword() != null && isValidPassword(editUser.getPassword())){
             userRepository.encryptPassword(editUser.getPassword(),editUser.getId());
-        }else if(editUser.getPassword() != null)throw new InvalidRequestException("Invalid password, must be longer than 8 characters and contain one number, one special character, and one alphabetical character");
+        }else if(editUser.getPassword() != null)throw new InvalidRequestException("Invalid password, must be longer than 8 characters and contain one number, one special character, and one alphabetical character");//404
     }
 
     public void deleteUser(ActivateUser activateUser){
-        if(userRepository.deleteUser(activateUser.getId()) == 0) throw new InvalidRequestException("Invalid request, user does not exist or is active");
+        if(userRepository.deleteUser(activateUser.getId()) == 0) throw new InvalidRequestException("Invalid request, user does not exist or is active");//404
+    }
+
+    public List<User> sortUsers(String sorter, String columnName){
+        if(!columnExists(columnName))throw new InvalidRequestException("No such column exists");//404
+        Sort sort = null;
+        if(sorter.toLowerCase().equals("asc")) sort = Sort.by(Sort.Direction.ASC, columnName);
+        else if(sorter.toLowerCase().equals("desc")) sort = Sort.by(Sort.Direction.DESC, columnName);
+        else throw new InvalidRequestException("Invalid sort order");//404
+        return userRepository.findAll(sort);
+    }
+
+    public List<User> filterUser(String columnName, String filter){
+        if(!columnExists(columnName))throw new InvalidRequestException("No such column exists");//404
+        List<User> filterList = userRepository.findAll(UserSpecifications.userByColumnNameAndValue(columnName, filter));
+        if(filterList.isEmpty())throw new InvalidRequestException("No Users found");//404
+        return filterList;
     }
 
     private String nullChecker(NewUserRequest request){
@@ -136,5 +155,9 @@ public class UserService {
 
     private boolean userIDExists(String userID){
         return userRepository.getAllUserID().contains(userID);
+    }
+
+    private boolean columnExists(String columnName) {
+        return userRepository.getColumnNames().contains(columnName);
     }
 }

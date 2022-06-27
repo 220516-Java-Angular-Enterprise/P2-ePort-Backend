@@ -9,6 +9,7 @@ import com.doomedcat17.scpier.exception.SCPierApiException;
 import com.revature.ePort.tag.Tag;
 import com.revature.ePort.tag.TagService;
 import com.revature.ePort.util.annotations.Inject;
+import com.revature.ePort.util.custom_exception.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,9 @@ public class SCPService {
 
 
     //todo validation check for duplicate scp name
-    public String createSCP(String name){
+    public SCP createSCP(String name){
+        SCP out = scpRepository.findScpByName(name);//Can't be scp because of the lambda expression
+        if(out != null) return out;
         try {
             ScpWikiData scpData = scPierWrapper.getScpWikiData(name);
             List<ContentNode<?>> content = scpData.getContent();
@@ -55,15 +58,18 @@ public class SCPService {
                 }).collect(Collectors.toList()));
 
             scpRepository.save(scp);
-            return scp.getName();
+            return scp;
         } catch (SCPierApiException e) {
             throw new RuntimeException(e);
         }
     }
 
     public SCP findSCPByName(String name){
-        return scpRepository.findScpByName(name);
+        SCP scp = scpRepository.findScpByName(name);
+        if(scp == null) throw new InvalidRequestException("SCP not in database");
+        return scp;
     }
+
 
     private String getSCPImage(List<ContentNode<?>> contentNodeList){
         List<String> imageList = contentNodeList.stream().filter(image-> image.getContentNodeType().equals(ContentNodeType.IMAGE)).map(image->image.getContent().toString()).collect(Collectors.toList());
