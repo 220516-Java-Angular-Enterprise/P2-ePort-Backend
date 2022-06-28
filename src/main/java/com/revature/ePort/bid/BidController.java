@@ -1,5 +1,7 @@
 package com.revature.ePort.bid;
 
+import com.revature.ePort.auth.TokenService;
+import com.revature.ePort.auth.dtos.response.Principal;
 import com.revature.ePort.bid.dtos.requests.NewBid;
 import com.revature.ePort.bid.dtos.responses.ViewBidHistory;
 import com.revature.ePort.util.annotations.Inject;
@@ -24,11 +26,13 @@ public class BidController {
 
     @Inject
     private final BidService bidService;
+    private final TokenService tokenService;
 
     @Inject
     @Autowired
-    public BidController(BidService bidService) {
+    public BidController(BidService bidService, TokenService tokenService) {
         this.bidService = bidService;
+        this.tokenService = tokenService;
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -39,7 +43,7 @@ public class BidController {
 
     @PostMapping(path = "/newBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    NewBid addNewBid(@RequestBody NewBid newBid){
+    NewBid addNewBid(@RequestBody NewBid newBid, @RequestHeader("Authorization") String token){
         bidService.addNewBid(newBid);
         return newBid;
     }
