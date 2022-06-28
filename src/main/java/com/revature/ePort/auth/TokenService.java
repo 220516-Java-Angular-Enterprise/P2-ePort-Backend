@@ -3,7 +3,12 @@ package com.revature.ePort.auth;
 
 
 import com.revature.ePort.auth.dtos.response.Principal;
+import com.revature.ePort.user.User;
+import com.revature.ePort.user.UserService;
 import com.revature.ePort.util.annotations.Inject;
+import com.revature.ePort.util.custom_exception.AuthenticationException;
+import com.revature.ePort.util.custom_exception.InvalidRequestException;
+import com.revature.ePort.util.custom_exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -16,6 +21,7 @@ import java.util.Date;
 public class TokenService {
     @Inject
     private JwtConfig jwtConfig;
+    private UserService userService;
 
     public TokenService() {
         super();
@@ -23,9 +29,15 @@ public class TokenService {
 
     @Inject
     @Autowired
-    public TokenService(JwtConfig jwtConfig) {
+    public TokenService(JwtConfig jwtConfig, UserService userService) {
         this.jwtConfig = jwtConfig;
+        this.userService = userService;
     }
+
+
+
+
+
 
     public String generateToken(Principal subject) {
         long now = System.currentTimeMillis();
@@ -52,5 +64,14 @@ public class TokenService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public Principal noTokenThrow(String token){
+        Principal requester = extractRequesterDetails(token);
+        if(requester == null) throw new UnauthorizedException("No authorization found");//401
+        User user = userService.getUserByUsername(requester.getUsername());
+        if(user == null) throw new InvalidRequestException("Error cannot find user");//404
+        if(!user.isActive()) throw new AuthenticationException("Inactive user");//403
+        return requester;
     }
 }
