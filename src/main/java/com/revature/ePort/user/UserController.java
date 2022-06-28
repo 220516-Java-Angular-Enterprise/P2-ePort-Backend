@@ -38,8 +38,6 @@ public class UserController {
 
 
 
-
-
     //region HTTP Post methods
     /**
      * Takes in a new user request in the form of a mapped json object
@@ -61,14 +59,18 @@ public class UserController {
     @RequestMapping("/activate")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void activate(@RequestBody ActivateUser activateUser){
+    public void activate(@RequestHeader("Authorization") String token, @RequestBody ActivateUser activateUser){
+        Principal principal = tokenService.noTokenThrow(token);
+        if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
         userService.enableUser(activateUser);
     }
 
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void editDetails(@RequestBody EditUser editUser){
+    public void editDetails(@RequestHeader("Authorization") String token, @RequestBody EditUser editUser){
+        Principal principal = tokenService.noTokenThrow(token);
+        editUser.setId(principal.getId());
         userService.updateUser(editUser);
     }
     //endregion
@@ -78,7 +80,9 @@ public class UserController {
     @RequestMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteInactiveUser(@RequestBody ActivateUser activateUser){
+    public void deleteInactiveUser(@RequestHeader("Authorization") String token, @RequestBody ActivateUser activateUser){
+        Principal principal = tokenService.noTokenThrow(token);
+        if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
         userService.deleteUser(activateUser);
     }
     //endregion
@@ -87,21 +91,27 @@ public class UserController {
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody User getUser(@PathVariable String username){
-        return userService.getUserByUsername(username);
+    public @ResponseBody User getUser(@RequestHeader("Authorization") String token, @PathVariable String username){
+        Principal principal = tokenService.noTokenThrow(token);
+        if(!principal.getRole().equals("ADMIN")) return userService.getUserByUsername(principal.getUsername());
+        else return userService.getUserByUsername(username);
     }
 
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{sort}/{columnName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<User> getAllUsersSorted(@PathVariable String sort,@PathVariable String columnName){
+    public @ResponseBody List<User> getAllUsersSorted(@RequestHeader("Authorization") String token, @PathVariable String sort,@PathVariable String columnName){
+        Principal principal = tokenService.noTokenThrow(token);
+        if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
         return userService.sortUsers(sort, columnName);
     }
 
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/filter/{columnName}/{filter}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<User> getAllUsersFiltered(@PathVariable String columnName,@PathVariable String filter){
+    public @ResponseBody List<User> getAllUsersFiltered(@RequestHeader("Authorization") String token, @PathVariable String columnName,@PathVariable String filter){
+        Principal principal = tokenService.noTokenThrow(token);
+        if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
         return userService.filterUser(columnName, filter);
     }
 
@@ -109,9 +119,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<User> getAllUsers(@RequestHeader("Authorization") String token){
-        Principal requester = tokenService.extractRequesterDetails(token);
-        if(requester == null) throw new UnauthorizedException("No authorization found");
-        if(!requester.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
+        Principal principal = tokenService.noTokenThrow(token);
+        if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
         return userService.getAllUsers();
     }
     //endregion
@@ -165,5 +174,13 @@ public class UserController {
     }
     //endregion
 
+    /*private Principal noTokenThrow(String token){
+        Principal requester = tokenService.extractRequesterDetails(token);
+        if(requester == null) throw new UnauthorizedException("No authorization found");//401
+        User user = userService.getUserByUsername(requester.getUsername());
+        if(user == null) throw new InvalidRequestException("Error cannot find user");//404
+        if(!user.isActive()) throw new AuthenticationException("Inactive user");//403
+        return requester;
+    }*/
 
 }
