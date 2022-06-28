@@ -97,8 +97,8 @@ public class UserService {
         }else if(editUser.getPassword() != null)throw new InvalidRequestException("Invalid password, must be longer than 8 characters and contain one number, one special character, and one alphabetical character");//404
     }
 
-    public void deleteUser(ActivateUser activateUser){
-        if(userRepository.deleteUser(activateUser.getId()) == 0) throw new InvalidRequestException("Invalid request, user does not exist or is active");//404
+    public void deleteUser(String username){
+        if(userRepository.deleteUser(username) == 0) throw new InvalidRequestException("Invalid request, user does not exist or is active");//404
     }
 
     public List<User> sortUsers(String sorter, String columnName){

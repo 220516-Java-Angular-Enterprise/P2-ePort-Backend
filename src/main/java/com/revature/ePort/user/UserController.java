@@ -48,8 +48,8 @@ public class UserController {
     @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String register(@RequestBody NewUserRequest newUserRequest){
-        return userService.register(newUserRequest).getId();
+    public void register(@RequestBody NewUserRequest newUserRequest){
+        userService.register(newUserRequest).getId();
     }
 
     //endregion
@@ -77,13 +77,12 @@ public class UserController {
 
     //region HTTP Delete methods
     @CrossOrigin
-    @RequestMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteInactiveUser(@RequestHeader("Authorization") String token, @RequestBody ActivateUser activateUser){
+    @DeleteMapping(value = "/delete/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteInactiveUser(@RequestHeader("Authorization") String token, @PathVariable String username){
         Principal principal = tokenService.noTokenThrow(token);
         if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
-        userService.deleteUser(activateUser);
+        userService.deleteUser(username);
     }
     //endregion
 

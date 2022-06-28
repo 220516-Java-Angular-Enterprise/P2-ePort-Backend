@@ -39,6 +39,7 @@ public class AuthController {
     public @ResponseBody Principal login(@RequestBody LoginRequest request, HttpServletResponse resp) {
         Principal principal = new Principal(userService.login(request));
         String token = tokenService.generateToken(principal);
+        principal.setId(token);
         resp.setHeader("Authorization", token);
         return principal;
     }
