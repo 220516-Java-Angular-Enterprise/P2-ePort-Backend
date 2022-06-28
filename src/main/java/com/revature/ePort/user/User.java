@@ -128,7 +128,7 @@ public class User {
         this.paymentID = paymentID;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
