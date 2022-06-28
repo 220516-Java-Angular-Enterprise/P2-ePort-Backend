@@ -35,21 +35,27 @@ public class BidController {
         this.tokenService = tokenService;
     }
 
+    @CrossOrigin
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(value = "/{userid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody List<Bid> bidHistoryList(@PathVariable String userid){
+    @ResponseBody List<Bid> bidHistoryList(@PathVariable String userid, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
         return bidService.bidHistoryList(userid);
     }
 
+    @CrossOrigin
     @PostMapping(path = "/newBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     NewBid addNewBid(@RequestBody NewBid newBid, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
         bidService.addNewBid(newBid);
         return newBid;
     }
 
+    @CrossOrigin
     @PutMapping(path = "/updateBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody void updateBid(@RequestBody NewBid updateBid){
+    @ResponseBody void updateBid(@RequestBody NewBid updateBid, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
         bidService.updateBid(updateBid);
     }
 

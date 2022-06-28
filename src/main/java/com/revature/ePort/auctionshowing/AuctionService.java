@@ -50,7 +50,7 @@ public class AuctionService {
     }
 
     public List<AuctionShowing> sortAuctions(){
-        List<AuctionShowing> sortedList = auctionRepository.findAll();
+        List<AuctionShowing> sortedList = auctionRepository.activeAuctions();
         sortedList.stream().sorted(Comparator.comparing(AuctionShowing::getStartingDate));
         return sortedList;
     }

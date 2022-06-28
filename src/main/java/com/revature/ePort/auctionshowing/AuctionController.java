@@ -39,14 +39,17 @@ public class AuctionController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    List<AuctionShowing> activeAutions(){return auctionService.getAllActive();}
+    List<AuctionShowing> activeAutions(@RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
+        return auctionService.getAllActive();
+    }
 
     @CrossOrigin
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(value = "/{userid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     List<AuctionShowing> userAuctions(@PathVariable String userid, @RequestHeader("Authorization") String token){
-        Principal user = tokenService.extractRequesterDetails(token);
+        Principal user = tokenService.noTokenThrow(token);
         if(!user.getRole().equals("ADMIN") && !user.getRole().equals("SELLER")) throw new InvalidRequestException("Unauthorized");
         return auctionService.getAllUserAuctions(userid);
     }
@@ -56,7 +59,7 @@ public class AuctionController {
     @PostMapping(path = "/newAuction", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     NewAuction insertAuction(@RequestBody NewAuction newAuction, @RequestHeader("Authorization") String token){
-        Principal user = tokenService.extractRequesterDetails(token);
+        Principal user = tokenService.noTokenThrow(token);
         if(!user.getRole().equals("ADMIN") && !user.getRole().equals("SELLER")) throw new InvalidRequestException("Unauthorized");
         auctionService.insertNewAuction(newAuction);
         return newAuction;
@@ -65,7 +68,8 @@ public class AuctionController {
     @CrossOrigin
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/sort", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<AuctionShowing> sortedAuctions(){
+    public @ResponseBody List<AuctionShowing> sortedAuctions(@RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
         return auctionService.sortAuctions();
     }
 
