@@ -1,5 +1,7 @@
 package com.revature.ePort.bid;
 
+import com.revature.ePort.auth.TokenService;
+import com.revature.ePort.auth.dtos.response.Principal;
 import com.revature.ePort.bid.dtos.requests.NewBid;
 import com.revature.ePort.bid.dtos.responses.ViewBidHistory;
 import com.revature.ePort.util.annotations.Inject;
@@ -24,28 +26,36 @@ public class BidController {
 
     @Inject
     private final BidService bidService;
+    private final TokenService tokenService;
 
     @Inject
     @Autowired
-    public BidController(BidService bidService) {
+    public BidController(BidService bidService, TokenService tokenService) {
         this.bidService = bidService;
+        this.tokenService = tokenService;
     }
 
+    @CrossOrigin
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(value = "/{userid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody List<Bid> bidHistoryList(@PathVariable String userid){
+    @ResponseBody List<Bid> bidHistoryList(@PathVariable String userid, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
         return bidService.bidHistoryList(userid);
     }
 
+    @CrossOrigin
     @PostMapping(path = "/newBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    NewBid addNewBid(@RequestBody NewBid newBid){
+    NewBid addNewBid(@RequestBody NewBid newBid, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
         bidService.addNewBid(newBid);
         return newBid;
     }
 
+    @CrossOrigin
     @PutMapping(path = "/updateBid", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody void updateBid(@RequestBody NewBid updateBid){
+    @ResponseBody void updateBid(@RequestBody NewBid updateBid, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
         bidService.updateBid(updateBid);
     }
 
