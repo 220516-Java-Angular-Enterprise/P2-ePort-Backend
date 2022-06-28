@@ -71,7 +71,7 @@ public class TokenService {
         if(requester == null) throw new UnauthorizedException("No authorization found");//401
         User user = userService.getUserByUsername(requester.getUsername());
         if(user == null) throw new InvalidRequestException("Invalid user token");//404
-        if(!user.isActive()) throw new AuthenticationException("Inactive user token");//403
+        if(!user.getIsActive()) throw new AuthenticationException("Inactive user token");//403
         return requester;
     }
 }

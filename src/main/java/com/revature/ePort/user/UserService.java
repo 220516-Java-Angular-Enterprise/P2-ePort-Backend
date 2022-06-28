@@ -61,7 +61,7 @@ public class UserService {
         if(!isValidUsername(loginRequest.getUsername()) || !isValidPassword(loginRequest.getPassword())) throw new InvalidRequestException("Invalid username or password");//404
         User user = userRepository.getUserByUsernameAndPassword(loginRequest.getUsername(),loginRequest.getPassword());
         if(user == null)throw new InvalidRequestException("Invalid credentials");//404
-        if (!user.isActive()) throw new AuthenticationException("Inactive User");//403
+        if (!user.getIsActive()) throw new AuthenticationException("Inactive User");//403
         return user;
     }
 
