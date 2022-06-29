@@ -6,6 +6,8 @@ import com.doomedcat17.scpier.data.content.ContentNodeType;
 import com.doomedcat17.scpier.data.content.ParagraphNode;
 import com.doomedcat17.scpier.data.scp.ScpWikiData;
 import com.doomedcat17.scpier.exception.SCPierApiException;
+import com.revature.ePort.scpier.SCPierService;
+import com.revature.ePort.scpier.SCPierWrapper;
 import com.revature.ePort.tag.Tag;
 import com.revature.ePort.tag.TagService;
 import com.revature.ePort.util.annotations.Inject;
@@ -26,21 +28,30 @@ public class SCPService {
     private final SCPRepository scpRepository;
     private final SCPierWrapper scPierWrapper;
     private final TagService tagService;
+    private final SCPierService scPierService;
 
 
     @Inject
     @Autowired
-    public SCPService(SCPRepository scpRepository, SCPierWrapper scPierWrapper, TagService tagService) {
+    public SCPService(SCPRepository scpRepository, SCPierWrapper scPierWrapper, TagService tagService, SCPierService scPierService) {
         this.scpRepository = scpRepository;
         this.scPierWrapper = scPierWrapper;
         this.tagService = tagService;
+        this.scPierService = scPierService;
     }
 
 
     //todo validation check for duplicate scp name
+    public String testSCP(String name) {
+        SCP out = scpRepository.findScpByName(name);//Can't be scp because of the lambda expression
+        if (out != null) return out.getName();
+        return scPierService.getPlainJSON(name);
+    }
+
     public SCP createSCP(String name){
         SCP out = scpRepository.findScpByName(name);//Can't be scp because of the lambda expression
         if(out != null) return out;
+
         try {
             ScpWikiData scpData = scPierWrapper.getScpWikiData(name);
             List<ContentNode<?>> content = scpData.getContent();

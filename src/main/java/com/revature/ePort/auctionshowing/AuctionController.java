@@ -1,8 +1,6 @@
 package com.revature.ePort.auctionshowing;
 
 import com.revature.ePort.auctionshowing.dtos.requests.NewAuction;
-import com.revature.ePort.auctionshowing.dtos.responses.ActiveAuctions;
-import com.revature.ePort.auctionshowing.dtos.responses.UserAuctions;
 import com.revature.ePort.auth.TokenService;
 import com.revature.ePort.auth.dtos.response.Principal;
 import com.revature.ePort.util.annotations.Inject;

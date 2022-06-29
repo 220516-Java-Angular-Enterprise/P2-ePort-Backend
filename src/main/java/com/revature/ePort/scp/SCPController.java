@@ -49,6 +49,16 @@ public class SCPController {
     }
 
     @CrossOrigin
+    @RequestMapping("/test")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String testSCP(@RequestHeader("Authorization") String token, @RequestBody SCPOut scpOut){
+        Principal principal = tokenService.noTokenThrow(token);
+        if(!(principal.getRole().equals("ADMIN")||principal.getRole().equals("SELLER"))) throw new AuthenticationException("Invalid authentication");
+        return scpService.testSCP(scpOut.getName());
+    }
+
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody SCP getSCP(@RequestHeader("Authorization") String token, @PathVariable String name){
