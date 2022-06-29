@@ -10,7 +10,7 @@ public class NewAuction {
     private boolean status;
     private String startingDate;
     private String expiration;
-    private String scp_id;
+    private String scpName;
     private String user_id;
 
 
@@ -18,13 +18,13 @@ public class NewAuction {
 
     }
 
-    public NewAuction(BigDecimal buyOut, BigDecimal startingBid, String startingDate, String expiration, String title, String scp_id, String user_id) {
+    public NewAuction(BigDecimal buyOut, BigDecimal startingBid, String startingDate, String expiration, String title, String scpName, String user_id) {
         this.buyOut = buyOut;
         this.startingBid = startingBid;
         this.startingDate = startingDate;
         this.expiration = expiration;
         this.title = title;
-        this.scp_id = scp_id;
+        this.scpName = scpName;
         this.user_id = user_id;
     }
 
@@ -68,12 +68,12 @@ public class NewAuction {
         this.title = title;
     }
 
-    public String getScp_id() {
-        return scp_id;
+    public String getscpName() {
+        return scpName;
     }
 
-    public void setScp_id(String scp_id) {
-        this.scp_id = scp_id;
+    public void setscpName(String scpName) {
+        this.scpName = scpName;
     }
 
     public String getUser_id() {
@@ -100,7 +100,7 @@ public class NewAuction {
                 ", startingDate=" + startingDate +
                 ", expiration=" + expiration +
                 ", title='" + title + '\'' +
-                ", scp='" + scp_id + '\'' +
+                ", scp='" + scpName + '\'' +
                 ", username='" + user_id + '\'' +
                 '}';
     }

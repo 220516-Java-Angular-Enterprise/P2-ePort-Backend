@@ -8,6 +8,7 @@ import com.revature.ePort.util.annotations.Inject;
 import com.revature.ePort.util.custom_exception.AuthenticationException;
 import com.revature.ePort.util.custom_exception.InvalidRequestException;
 import com.revature.ePort.util.custom_exception.ResourceConflictException;
+import com.revature.ePort.util.email.EmailService;
 import com.revature.ePort.util.specifications.UserSpecifications;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +25,13 @@ public class UserService {
 
     @Inject
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     @Inject
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     /**
@@ -53,6 +55,7 @@ public class UserService {
 
         userRepository.save(user);
         userRepository.encryptPassword(user.getPassword(),user.getId());
+
         return user;
     }
 
@@ -70,6 +73,10 @@ public class UserService {
         if(!userIDExists(activateUser.getId())) throw new InvalidRequestException("Invalid user ID");//404
         System.out.println(activateUser.getIsActive() +"");
         userRepository.updateUserStatus(activateUser.getIsActive(), activateUser.getId());
+        User user = userRepository.getUserbyID(activateUser.getId());
+        if(!user.isActive() && user.getEmail().equals("baviles599@gmail.com")){
+            emailService.sendFeedback("Account Status", user.getEmail(), "Your account has been deactivated");
+        }
     }
 
     public User getUserByUsername(String username){

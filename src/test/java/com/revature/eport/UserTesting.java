@@ -5,6 +5,7 @@ import com.revature.ePort.user.UserService;
 import com.revature.ePort.user.dtos.requests.NewUserRequest;
 import com.revature.ePort.util.custom_exception.InvalidRequestException;
 import com.revature.ePort.util.custom_exception.ResourceConflictException;
+import com.revature.ePort.util.email.EmailService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +20,12 @@ public class UserTesting {
     private UserService userService;
     private UserRepository userRepository;
     private NewUserRequest newUserRequest;
+    private EmailService feedbackController;
 
     @Before
     public void setup(){
         userRepository = mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, feedbackController);
     }
 
     @Test
