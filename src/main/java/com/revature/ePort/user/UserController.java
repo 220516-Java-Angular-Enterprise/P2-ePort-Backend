@@ -56,9 +56,9 @@ public class UserController {
 
     //region HTTP Put methods
     @CrossOrigin
-    @RequestMapping("/activate")
+    //@RequestMapping("/activate") //does not work set value in the HTTP verb mapping
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/activate", consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public void activate(@RequestHeader("Authorization") String token, @RequestBody ActivateUser activateUser){
         Principal principal = tokenService.noTokenThrow(token);
         if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
@@ -76,9 +76,9 @@ public class UserController {
     //endregion
 
     //region HTTP Delete methods
-    @CrossOrigin
+    @CrossOrigin()
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping(value = "/delete/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{username}",produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteInactiveUser(@RequestHeader("Authorization") String token, @PathVariable String username){
         Principal principal = tokenService.noTokenThrow(token);
         if(!principal.getRole().equals("ADMIN")) throw new AuthenticationException("Invalid authorization");
