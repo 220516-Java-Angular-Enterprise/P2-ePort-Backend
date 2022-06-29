@@ -74,7 +74,7 @@ public class UserService {
         System.out.println(activateUser.getIsActive() +"");
         userRepository.updateUserStatus(activateUser.getIsActive(), activateUser.getId());
         User user = userRepository.getUserbyID(activateUser.getId());
-        if(!user.isActive() && user.getEmail().equals("baviles599@gmail.com")){
+        if(!user.getIsActive() && user.getEmail().equals("baviles599@gmail.com")){
             emailService.sendFeedback("Account Status", user.getEmail(), "Your account has been deactivated");
         }
     }
