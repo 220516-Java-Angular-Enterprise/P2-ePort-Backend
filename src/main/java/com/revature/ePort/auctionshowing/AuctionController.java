@@ -46,7 +46,7 @@ public class AuctionController {
 
     @CrossOrigin
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @GetMapping(value = "/{userid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/history/{userid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
     List<AuctionShowing> userAuctions(@PathVariable String userid, @RequestHeader("Authorization") String token){
         Principal user = tokenService.noTokenThrow(token);

@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,32 +15,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.*;
-import javax.mail.internet.MimeMessage;
 import javax.xml.bind.ValidationException;
 import java.util.Properties;
 
-@RestController
-@RequestMapping("/feedback")
-public class FeedbackController {
+@Component
+public class EmailService {
 
-    @Inject
-    EmailConfigure emailConfigure;
-
-    @Inject
     @Autowired
-    public FeedbackController(EmailConfigure emailConfigure) {
-        this.emailConfigure = emailConfigure;
+    private JavaMailSender mailSender;
+
+    public EmailService() {
     }
 
-    @PostMapping
-    public void sendFeedback(@RequestBody Feedback feedback, BindingResult bindResult)  {
-        if(bindResult.hasErrors()) throw new InvalidRequestException("Feedback is not valid");
+    public void sendFeedback(String subject, String email, String body) {
+        //create mail instance
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom("ePortBackend@gmail.com");
+        mailMessage.setTo(email);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(body);
+        //send mail
+        mailSender.send(mailMessage);
+    }
+}
 
-        /*JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+/*JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(emailConfigure.getHost());
         mailSender.setPort(emailConfigure.getPort());
         mailSender.setUsername(emailConfigure.getUsername());
-        mailSender.setPassword(emailConfigure.getPassword());*/
+        mailSender.setPassword(emailConfigure.getPassword());
 
 
         Properties props = new Properties();
@@ -71,9 +75,5 @@ public class FeedbackController {
             transport.send(mailMessage);
         }catch(Exception x){
             System.out.println(x.getMessage());
-        }
+        }*/
 
-
-
-    }
-}

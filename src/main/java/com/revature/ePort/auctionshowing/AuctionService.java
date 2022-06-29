@@ -42,11 +42,12 @@ public class AuctionService {
     public void insertNewAuction(NewAuction newAuction){
         Timestamp startingDate = Timestamp.valueOf(newAuction.getStartingDate().replaceAll("[A-Z]", " "));
         Timestamp expiration = Timestamp.valueOf(newAuction.getExpiration().replaceAll("[A-Z]", " "));
-        ///System.out.println(newAuction.getStartingDate());
-        //newAuction.setStatus(!startingDate.after(Timestamp.valueOf(String.valueOf(System.currentTimeMillis()))));
+        //setting the scp name to scp ID to insert into the database
+        newAuction.setscpName(auctionRepository.returnScpID(newAuction.getscpName()));
+        System.out.println(newAuction.getscpName());
         if(!validDates(startingDate,expiration)) throw new InvalidRequestException("Invalid start date");
         auctionRepository.newAuction(UUID.randomUUID().toString(), newAuction.getStatus(),newAuction.getBuyOut(), expiration, newAuction.getStartingBid()
-                                    ,startingDate, newAuction.getTitle(),newAuction.getScp_id(),newAuction.getUser_id());
+                                    ,startingDate, newAuction.getTitle(),newAuction.getscpName(),newAuction.getUser_id());
     }
 
     public List<AuctionShowing> sortAuctions(){

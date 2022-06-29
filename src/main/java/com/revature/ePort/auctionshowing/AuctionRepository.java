@@ -21,6 +21,9 @@ public interface AuctionRepository extends CrudRepository<AuctionShowing, String
             "inner join users as u on a.user_id = u.id ", nativeQuery = true)
     List<AuctionShowing> activeAuctions();
 
+    @Query(value = "select id from scp where name = ?1", nativeQuery = true)
+    String returnScpID(String name);
+
     @Query(value = "select * from auction_showing where user_id = ?1", nativeQuery = true)
     List<AuctionShowing> userAuctions(String userID);
 
