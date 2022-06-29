@@ -1,4 +1,4 @@
-package com.revature.ePort.scp;
+package com.revature.ePort.scpier;
 
 import com.doomedcat17.scpier.ScpFoundationDataProvider;
 import com.doomedcat17.scpier.data.scp.SCPBranch;

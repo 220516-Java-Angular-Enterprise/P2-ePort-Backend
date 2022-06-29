@@ -4,6 +4,8 @@ package com.revature.ePort.auth.dtos.response;
 import com.revature.ePort.user.User;
 
 public class Principal {
+
+    private String token;
     private String id;
     private String username;
     private String role;
@@ -13,6 +15,7 @@ public class Principal {
     }
 
     public Principal(User user) {
+        this.token = null;
         this.id = user.getId();
         this.username = user.getUsername();
         this.role = user.getRole();
@@ -22,6 +25,14 @@ public class Principal {
         this.id = id;
         this.username = username;
         this.role = role;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getId() {
