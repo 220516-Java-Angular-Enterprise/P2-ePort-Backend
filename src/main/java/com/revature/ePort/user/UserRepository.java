@@ -45,8 +45,8 @@ public interface UserRepository extends CrudRepository<User, String>, JpaSpecifi
     User getUserByUsernameAndPassword(String username, String password);
 
     @Modifying
-    @Query(value = "DELETE FROM users WHERE id = ?1 AND is_active IS NOT TRUE", nativeQuery = true)
-    int deleteUser(String id);
+    @Query(value = "DELETE FROM users WHERE username = ?1 AND is_active IS NOT TRUE", nativeQuery = true)
+    int deleteUser(String username);
 
     List<User> findAll(Sort sort);
 

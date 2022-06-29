@@ -91,7 +91,7 @@ public class EditUser {
         if(email != null)user.setEmail(email);
         if(paymentID != null)user.setPaymentID(paymentID);
         if(shippingAddress != null)user.setShippingAddress(shippingAddress);
-        if(funds.equals(0))user.setFunds(user.getFunds().add(funds));
+        if(!funds.equals(0))user.setFunds(user.getFunds().add(funds));
         return user;
     }
 }
