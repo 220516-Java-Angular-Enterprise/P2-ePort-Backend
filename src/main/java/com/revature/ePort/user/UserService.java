@@ -92,13 +92,12 @@ public class UserService {
     public void updateUser(EditUser editUser){
         User user = userRepository.getUserbyID(editUser.getId());
         if(user == null) throw new InvalidRequestException("Invalid user id");//404
-        if(editUser.getUsername() != null && editUser.getUsername().equals(user.getUsername()) && userExists(user.getUsername())) throw new ResourceConflictException("This username is already taken");//409
+        if(editUser.getUsername() != null && !editUser.getUsername().equals(user.getUsername()) && userExists(user.getUsername())) throw new ResourceConflictException("This username is already taken");//409
         editUser.updateUser(user);
         if(!isValidUsername(user.getUsername())) throw new InvalidRequestException("Invalid username, must be 8-20 characters long and no special characters except _ and .");//404
         //todo make this check have more info, or use the oauth from google
         if(editUser.getEmail() != null && !isValidEmail(user.getEmail())) throw new InvalidRequestException("Invalid email, must be a valid email address");//404
-
-        //userRepository.updateUser(user.getUsername(),user.getCodename(),user.getEmail(),user.getPaymentID(),user.getShippingAddress(),user.getFunds(),editUser.getUserID());
+        userRepository.updateUser(user.getUsername(),user.getCodename(),user.getEmail(),user.getPaymentID(),user.getShippingAddress(),user.getFunds(),editUser.getId());
         if(editUser.getPassword() != null && isValidPassword(editUser.getPassword())){
             userRepository.encryptPassword(editUser.getPassword(),editUser.getId());
         }else if(editUser.getPassword() != null)throw new InvalidRequestException("Invalid password, must be longer than 8 characters and contain one number, one special character, and one alphabetical character");//404

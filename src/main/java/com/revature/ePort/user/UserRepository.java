@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface UserRepository extends CrudRepository<User, String>, JpaSpecificationExecutor<User> {
@@ -24,7 +25,7 @@ public interface UserRepository extends CrudRepository<User, String>, JpaSpecifi
 
     @Modifying
     @Query(value = "UPDATE users SET username = ?1, codename = ?2, email = ?3, paymentid = ?4, shipping_address = ?5, funds = ?6 WHERE id = ?7", nativeQuery = true)
-    void updateUser(String username, String codename, String email, String paymentID, String shippingAddress, int funds, String id);
+    void updateUser(String username, String codename, String email, String paymentID, String shippingAddress, BigDecimal funds, String id);
 
     @Query(value = "SELECT * FROM users", nativeQuery = true)
     List<User> getAllUsers();
