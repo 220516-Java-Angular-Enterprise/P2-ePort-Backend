@@ -6,6 +6,7 @@ import com.doomedcat17.scpier.exception.SCPierApiException;
 import com.revature.ePort.auctionshowing.dtos.requests.NewAuction;
 import com.revature.ePort.auctionshowing.dtos.responses.ActiveAuctions;
 import com.revature.ePort.auctionshowing.dtos.responses.UserAuctions;
+import com.revature.ePort.scp.SCP;
 import com.revature.ePort.user.User;
 import com.revature.ePort.util.annotations.Inject;
 import com.revature.ePort.util.custom_exception.InvalidRequestException;
@@ -44,9 +45,16 @@ public class AuctionService {
         Timestamp expiration = Timestamp.valueOf(newAuction.getExpiration().replaceAll("[A-Z]", " "));
         //setting the scp name to scp ID to insert into the database
         newAuction.setscpName(auctionRepository.returnScpID(newAuction.getscpName()));
+        if(scpDuplicate(newAuction.getscpName())) throw new InvalidRequestException("Duplicate SCP");
         if(!validDates(startingDate,expiration)) throw new InvalidRequestException("Invalid start date");
         auctionRepository.newAuction(UUID.randomUUID().toString(), newAuction.getStatus(),newAuction.getBuyOut(), expiration, newAuction.getStartingBid()
                                     ,startingDate, newAuction.getTitle(),newAuction.getscpName(),newAuction.getUser_id());
+    }
+
+    public UserAuctions detailedAuction(String title){
+        UserAuctions details = new UserAuctions();
+        details.extractAuction(auctionRepository.auction(title));
+        return details;
     }
 
     public List<AuctionShowing> sortAuctions(){
@@ -59,7 +67,9 @@ public class AuctionService {
         return start.before(end);
     }
 
-
+    private boolean scpDuplicate(String scpID){
+        return auctionRepository.duplicateAuction(scpID) == null;
+    }
 
 
 }

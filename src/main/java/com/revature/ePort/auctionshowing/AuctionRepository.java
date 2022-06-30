@@ -2,6 +2,7 @@ package com.revature.ePort.auctionshowing;
 
 import com.revature.ePort.auctionshowing.dtos.responses.ActiveAuctions;
 import com.revature.ePort.auctionshowing.dtos.responses.UserAuctions;
+import com.revature.ePort.scp.SCP;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,12 +27,22 @@ public interface AuctionRepository extends CrudRepository<AuctionShowing, String
     @Query(value = "select * from auction_showing where user_id = ?1", nativeQuery = true)
     List<AuctionShowing> userAuctions(String userID);
 
+    /*@Query(value = "select title, buyout_bid, starting_bid, starting_date, expiration_date, max(amount), s.* from auction_showing as a\n" +
+            "inner join bid as b on a.id = b.auction_showing_id \n" +
+            "inner join scp as s on a.scp_id = s.id \n" +
+            "group by title, buyout_bid, starting_bid, starting_date, expiration_date, s.id\n" +
+            "having title = ?1", nativeQuery = true)
+    UserAuctions detailedAuction(String title);*/
+
+    @Query(value = "select * from auction_showing where title = ?1", nativeQuery = true)
+    AuctionShowing auction(String title);
+
     @Modifying
     @Query(value = "insert into auction_showing(id, auction_status, buyout_bid, expiration_date, number_of_bids ,starting_bid, starting_date,title,scp_id,user_id) " +
             "values(?1,?2,?3,?4,0,?5,?6,?7,?8,?9)", nativeQuery = true)
     void newAuction(String UUID, boolean status, BigDecimal buyout, Timestamp expirationDate, BigDecimal startingbid, Timestamp startingDate, String title, String scpId, String userId);
 
-    @Query(value = "select * from auction_showing where scp_id = ?1", nativeQuery = true)
+    @Query(value = "select scp_id from auction_showing where scp_id = ?1", nativeQuery = true)
     AuctionShowing duplicateAuction(String scpID);
 
 }

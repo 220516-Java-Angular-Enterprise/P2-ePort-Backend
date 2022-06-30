@@ -21,7 +21,6 @@ public class AuctionTesting {
 
     private AuctionRepository auctionRepositoryMock;
     private AuctionService  auctionService;
-    ActiveAuctions activeAuctionsMock = new ActiveAuctions();
     AuctionShowing userAuctionsMock = new AuctionShowing();
     NewAuction newAuction = new NewAuction();
 

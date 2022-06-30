@@ -1,6 +1,7 @@
 package com.revature.ePort.auctionshowing;
 
 import com.revature.ePort.auctionshowing.dtos.requests.NewAuction;
+import com.revature.ePort.auctionshowing.dtos.responses.UserAuctions;
 import com.revature.ePort.auth.TokenService;
 import com.revature.ePort.auth.dtos.response.Principal;
 import com.revature.ePort.util.annotations.Inject;
@@ -69,6 +70,15 @@ public class AuctionController {
     public @ResponseBody List<AuctionShowing> sortedAuctions(@RequestHeader("Authorization") String token){
         Principal user = tokenService.noTokenThrow(token);
         return auctionService.sortAuctions();
+    }
+
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping(value = "/detailed/{title}", produces =  MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    UserAuctions detailedAuction(@PathVariable String title, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
+        return auctionService.detailedAuction(title);
     }
 
     //region Exception Handlers
