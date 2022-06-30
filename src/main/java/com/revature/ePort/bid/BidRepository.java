@@ -30,6 +30,9 @@ public interface BidRepository extends CrudRepository<Bid, String> {
     @Query(value = "select scp_id from auction_showing where id = ?1",nativeQuery = true)
     String auctionExists(String auctionShowingID);
 
+    @Query(value = "select auction_showing_id from bid where auction_showing_id = ?1 and user_id = ?2", nativeQuery = true)
+    String bidExists(String auctionID, String userID);
+
     @Query(value = "select auction_status from auction_showing where id = ?1", nativeQuery = true)
     boolean auctionIsActive(String id);
 

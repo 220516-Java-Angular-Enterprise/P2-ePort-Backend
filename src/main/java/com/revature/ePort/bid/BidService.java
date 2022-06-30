@@ -29,7 +29,7 @@ public class BidService {
     }
 
     public void addNewBid(NewBid newBid){
-        if(!bidExists(newBid.getAuction_id())) throw new ResourceConflictException("Auction doesn't exist");
+        if(!auctionExists(newBid.getAuction_id())) throw new ResourceConflictException("Auction doesn't exist");
         if(!auctionIsActive(newBid.getAuction_id()))throw new InvalidRequestException("Auction is no longer active");
         if(!correctPricing(newBid.getAmount(),newBid.getAuction_id())) throw new ResourceConflictException("Amount not valid");
         if(buyOutBid(newBid.getAmount(), newBid.getAuction_id())){
@@ -46,7 +46,8 @@ public class BidService {
     }
 
     public void updateBid(NewBid updateBid){
-        if(!bidExists(updateBid.getAuction_id())) throw new ResourceConflictException("Auction doesn't exist");
+        if(!auctionExists(updateBid.getAuction_id())) throw new ResourceConflictException("Auction doesn't exist");
+        if(!bidExists(updateBid.getAuction_id(), updateBid.getUser_id())) throw new InvalidRequestException("Can't update a non existent bid");
         if(!auctionIsActive(updateBid.getAuction_id()))throw new InvalidRequestException("Auction is no longer active");
         if(!correctPricing(updateBid.getAmount(),updateBid.getAuction_id())) throw new ResourceConflictException("Amount not valid");
         if(buyOutBid(updateBid.getAmount(), updateBid.getAuction_id())){
@@ -64,8 +65,12 @@ public class BidService {
         bidRepository.updateBid(updateBid.getAmount(),updateBid.getUser_id(),updateBid.getAuction_id());
     }
 
-    private boolean bidExists(String auctionID){
+    private boolean auctionExists(String auctionID){
         return bidRepository.auctionExists(auctionID) != null;
+    }
+
+    private boolean bidExists(String auctionID, String userID){
+        return bidRepository.bidExists(auctionID, userID) != null;
     }
 
     private boolean correctPricing(BigDecimal num, String auctionID){

@@ -37,9 +37,9 @@ public class OrderController {
 
     @GetMapping(value = "/history/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    List<Order> userOrderHistory(@PathVariable String userID, @RequestHeader("Authorization") String token){
+    List<Order> userOrderHistory(@PathVariable String username, @RequestHeader("Authorization") String token){
         Principal user = tokenService.noTokenThrow(token);
-        return orderService.userOrderHistory(userID);
+        return orderService.userOrderHistory(username);
     }
 
     @GetMapping(value = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
