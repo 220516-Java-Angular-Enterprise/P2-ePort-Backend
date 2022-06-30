@@ -37,6 +37,17 @@ public interface AuctionRepository extends CrudRepository<AuctionShowing, String
     @Query(value = "select * from auction_showing where title = ?1", nativeQuery = true)
     AuctionShowing auction(String title);
 
+    @Query(value = "select auction_status from auction_showing where id = ?1", nativeQuery = true)
+    boolean auctionStatus(String id);
+
+    @Modifying
+    @Query(value = "update auction_showing set auction_status = false where id = ?1", nativeQuery = true)
+    void disableAuction(String id);
+
+    @Modifying
+    @Query(value = "update auction_showing set auction_status = true where id = ?1", nativeQuery = true)
+    void enableAuction(String id);
+
     @Modifying
     @Query(value = "insert into auction_showing(id, auction_status, buyout_bid, expiration_date, number_of_bids ,starting_bid, starting_date,title,scp_id,user_id) " +
             "values(?1,?2,?3,?4,0,?5,?6,?7,?8,?9)", nativeQuery = true)
@@ -44,5 +55,8 @@ public interface AuctionRepository extends CrudRepository<AuctionShowing, String
 
     @Query(value = "select scp_id from auction_showing where scp_id = ?1", nativeQuery = true)
     AuctionShowing duplicateAuction(String scpID);
+
+    @Query(value = "select title from auction_showing where title = ?1", nativeQuery = true)
+    String titleDuplicate(String title);
 
 }
