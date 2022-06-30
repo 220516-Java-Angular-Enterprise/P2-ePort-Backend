@@ -36,14 +36,14 @@ public class AuctionCloser implements Runnable{
     public void run() {
         try {
             System.out.println("Auction Update Checked");
-            /*for (AuctionShowing auction: activeAuctionShowings) {
+            for (AuctionShowing auction: activeAuctionShowings) {
                 System.out.println("Made it to the scheduled task");
                 if (auction.getExpirationDate().before(Timestamp.valueOf(LocalDateTime.now()))){
-
+                    auctionService.changeStatus(auction.getId());
                     //auctionService update auction here (closing auction)
                     //Create new order which sends out an email
                 }
-            }*/
+            }
         } catch (Exception e){
             System.out.println("Error Scheduled update failed");
             e.printStackTrace();
