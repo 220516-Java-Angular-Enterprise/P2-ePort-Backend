@@ -86,12 +86,16 @@ public class EditUser {
     public User updateUser(User user){
         //todo get password working
         if(username != null)user.setUsername(username);
-        //if(password != null)user.setPassword(password);
+        if(password != null && !(password.equals(user.getPassword()))) {
+            user.setPassword(password);
+        } else {
+            password = (null);
+        }
         if(codename != null)user.setCodename(codename);
         if(email != null)user.setEmail(email);
         if(paymentID != null)user.setPaymentID(paymentID);
         if(shippingAddress != null)user.setShippingAddress(shippingAddress);
-        if(!funds.equals(0))user.setFunds(user.getFunds().add(funds));
+        if(funds != null) {if(!funds.equals(0))user.setFunds(user.getFunds().add(funds));}
         return user;
     }
 }
