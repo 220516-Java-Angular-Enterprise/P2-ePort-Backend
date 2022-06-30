@@ -1,6 +1,8 @@
 package com.revature.ePort.order;
 
 
+import com.revature.ePort.auth.TokenService;
+import com.revature.ePort.auth.dtos.response.Principal;
 import com.revature.ePort.order.dtos.requests.NewOrder;
 import com.revature.ePort.util.annotations.Inject;
 import com.revature.ePort.util.custom_exception.AuthenticationException;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,6 +26,8 @@ public class OrderController {
 
     @Inject
     private final OrderService orderService;
+    @Autowired
+    private TokenService tokenService;
 
     @Inject
     @Autowired
@@ -30,12 +35,20 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody String newOrder(@RequestBody NewOrder newOrder){
-
-        return newOrder.getShipped_address();
+    @GetMapping(value = "/history/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    List<Order> userOrderHistory(@PathVariable String userID, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
+        return orderService.userOrderHistory(userID);
     }
 
+    @GetMapping(value = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    List<Order> ePortOrderHistory(@RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
+        if(!user.getRole().equals("ADMIN")) throw new InvalidRequestException("Unathorized user");
+        return orderService.eportOrderHistory();
+    }
 
     //region Exception Handlers
     @ExceptionHandler

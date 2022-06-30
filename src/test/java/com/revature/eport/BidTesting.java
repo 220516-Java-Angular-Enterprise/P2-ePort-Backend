@@ -50,13 +50,13 @@ public class BidTesting {
         Assert.assertThrows(ResourceConflictException.class, () -> bidService.updateBid(newBid));
     }
 
-    @Test
+    /*@Test
     public void bidDoesntExists(){
         BigDecimal maxAmount = new BigDecimal(10);
         when(bidRepositoryMock.auctionExists("9f61db4f-6bf6-4518-bb17-", "dc200531-8797-4abb-88f5-21fb23ca15d2")).thenReturn(String.valueOf(true));
         when(bidRepositoryMock.maxAmount("9f61db4f-6bf6-4518-bb17-24e1843e147d")).thenReturn(maxAmount);
         newBid = new NewBid("9f61db4f-6bf6-4518-bb17-24e1843e147d", "dc200531-8797-4abb-88f5-21fb23ca15d2", new BigDecimal(100));
         Assert.assertThrows(ResourceConflictException.class, () -> bidService.updateBid(newBid));
-    }
+    }*/
 
 }
