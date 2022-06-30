@@ -32,6 +32,10 @@ public class BidService {
         if(!auctionExists(newBid.getAuction_id())) throw new ResourceConflictException("Auction doesn't exist");
         if(!auctionIsActive(newBid.getAuction_id()))throw new InvalidRequestException("Auction is no longer active");
         if(!correctPricing(newBid.getAmount(),newBid.getAuction_id())) throw new ResourceConflictException("Amount not valid");
+        if(bidExists(newBid.getAuction_id(), newBid.getUser_id())){
+            updateBid(newBid);
+            return;
+        }
         if(buyOutBid(newBid.getAmount(), newBid.getAuction_id())){
             newBid.setAmount(bidRepository.buyOut(newBid.getAuction_id()));
             long today = System.currentTimeMillis();
@@ -46,9 +50,6 @@ public class BidService {
     }
 
     public void updateBid(NewBid updateBid){
-        if(!auctionExists(updateBid.getAuction_id())) throw new ResourceConflictException("Auction doesn't exist");
-        if(!bidExists(updateBid.getAuction_id(), updateBid.getUser_id())) throw new InvalidRequestException("Can't update a non existent bid");
-        if(!auctionIsActive(updateBid.getAuction_id()))throw new InvalidRequestException("Auction is no longer active");
         if(!correctPricing(updateBid.getAmount(),updateBid.getAuction_id())) throw new ResourceConflictException("Amount not valid");
         if(buyOutBid(updateBid.getAmount(), updateBid.getAuction_id())){
             updateBid.setAmount(bidRepository.buyOut(updateBid.getAuction_id()));

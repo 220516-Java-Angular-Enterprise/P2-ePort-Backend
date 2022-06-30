@@ -19,9 +19,8 @@ public class AuctionCloser implements Runnable{
 
     @Inject
     @Autowired
-    public AuctionCloser(AuctionService auctionService, List<AuctionShowing> activeAuctionShowings) {
+    public AuctionCloser(AuctionService auctionService) {
         this.auctionService = auctionService;
-        this.activeAuctionShowings = activeAuctionShowings;
     }
 
     public List<AuctionShowing> getActiveAuctionShowings() {
@@ -35,7 +34,8 @@ public class AuctionCloser implements Runnable{
     @Override
     public void run() {
         try {
-            System.out.println("Auction Update Checked");
+            System.out.println("Auction Update Check Started");
+            activeAuctionShowings = auctionService.getAllActive();
             for (AuctionShowing auction: activeAuctionShowings) {
                 System.out.println("Made it to the scheduled task");
                 if (auction.getExpirationDate().before(Timestamp.valueOf(LocalDateTime.now()))){
@@ -43,7 +43,9 @@ public class AuctionCloser implements Runnable{
                     //auctionService update auction here (closing auction)
                     //Create new order which sends out an email
                 }
+
             }
+            System.out.println("Finished Auction Check");
         } catch (Exception e){
             System.out.println("Error Scheduled update failed");
             e.printStackTrace();
