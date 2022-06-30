@@ -34,6 +34,7 @@ public class BidService {
         if(!correctPricing(newBid.getAmount(),newBid.getAuction_id())) throw new ResourceConflictException("Amount not valid");
         if(bidExists(newBid.getAuction_id(), newBid.getUser_id())){
             updateBid(newBid);
+            bidRepository.removeFunds(newBid.getAmount(), newBid.getUser_id());
             return;
         }
         if(buyOutBid(newBid.getAmount(), newBid.getAuction_id())){
@@ -45,8 +46,11 @@ public class BidService {
             bidRepository.addNewBid(newBid.getAuction_id(),newBid.getUser_id(),newBid.getAmount());
             bidRepository.closeAuction(newBid.getAuction_id());
             bidRepository.createNewOrder(UUID.randomUUID().toString(), orderArrived, orderSent, "Preparing to package", shippingAddress);
+            bidRepository.removeFunds(newBid.getAmount(),newBid.getUser_id());
+            return;
         }
         bidRepository.addNewBid(newBid.getAuction_id(), newBid.getUser_id(),newBid.getAmount());
+        bidRepository.removeFunds(newBid.getAmount(), newBid.getUser_id());
     }
 
     public void updateBid(NewBid updateBid){
