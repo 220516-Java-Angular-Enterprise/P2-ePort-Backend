@@ -57,4 +57,8 @@ public interface BidRepository extends CrudRepository<Bid, String> {
     @Query(value = "update bid set orderid = ?1 where auction_showing_id = ?2", nativeQuery = true)
     void orderIdOnBid(String id, String auctionID);
 
+    @Modifying
+    @Query(value = "update users set funds = funds-?1 where id = ?2", nativeQuery = true)
+    void removeFunds(BigDecimal amount, String id);
+
 }
