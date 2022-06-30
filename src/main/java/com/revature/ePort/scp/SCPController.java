@@ -46,7 +46,7 @@ public class SCPController {
     public @ResponseBody SCP createSCP(@RequestHeader("Authorization") String token, @RequestBody SCPOut scpOut){
         Principal principal = tokenService.noTokenThrow(token);
         if(!(principal.getRole().equals("ADMIN")||principal.getRole().equals("SELLER"))) throw new AuthenticationException("Invalid authentication");
-        return scpService.createSCP(scpOut.getName());
+        return scpService.createSCP(scpOut.getName().toLowerCase());
     }
 
 

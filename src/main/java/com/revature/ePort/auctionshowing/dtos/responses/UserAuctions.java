@@ -19,6 +19,11 @@ public class UserAuctions {
     private BigDecimal highestBid;
     private SCP scp;
 
+    private String scpName;
+
+    private String scpImage;
+
+    private String scpDescription;
 
     public UserAuctions(String title, BigDecimal buyout_bid, BigDecimal starting_bid, Timestamp startDate, Timestamp expirationDate, SCP scp, BigDecimal highestBid) {
         this.title = title;
@@ -89,6 +94,30 @@ public class UserAuctions {
         this.highestBid = highestBid;
     }
 
+    public String getScpName() {
+        return scpName;
+    }
+
+    public void setScpName(String scpName) {
+        this.scpName = scpName;
+    }
+
+    public String getScpImage() {
+        return scpImage;
+    }
+
+    public void setScpImage(String scpImage) {
+        this.scpImage = scpImage;
+    }
+
+    public String getScpDescription() {
+        return scpDescription;
+    }
+
+    public void setScpDescription(String scpDescription) {
+        this.scpDescription = scpDescription;
+    }
+
     public void extractAuction(AuctionShowing details){
         title = details.getTitle();
         buyout_bid = details.getBuyoutBid();
@@ -97,6 +126,9 @@ public class UserAuctions {
         expirationDate = details.getExpirationDate();
         details.getBids().stream().max(Comparator.comparing(Bid::getAmount)).ifPresent(bid -> highestBid = bid.getAmount());
         scp = details.getScp();
+        scpName = scp.getName();
+        scpImage = scp.getImg();
+        scpDescription = scp.getDescription();
     }
 
     @Override
