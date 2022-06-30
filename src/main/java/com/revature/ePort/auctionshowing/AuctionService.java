@@ -45,7 +45,7 @@ public class AuctionService {
         Timestamp expiration = Timestamp.valueOf(newAuction.getExpiration().replaceAll("[A-Z]", " "));
         //setting the scp name to scp ID to insert into the database
         newAuction.setscpName(auctionRepository.returnScpID(newAuction.getscpName()));
-        if(scpDuplicate(newAuction.getscpName())) throw new InvalidRequestException("Duplicate SCP");
+        if(!scpDuplicate(newAuction.getscpName())) throw new InvalidRequestException("Duplicate SCP");
         if(!validDates(startingDate,expiration)) throw new InvalidRequestException("Invalid start date");
         if(!titleDuplicate(newAuction.getTitle())) throw new InvalidRequestException("Duplicate title");
         auctionRepository.newAuction(UUID.randomUUID().toString(), newAuction.getStatus(),newAuction.getBuyOut(), expiration, newAuction.getStartingBid()

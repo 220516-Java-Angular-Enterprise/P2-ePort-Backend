@@ -54,7 +54,7 @@ public interface AuctionRepository extends CrudRepository<AuctionShowing, String
     void newAuction(String UUID, boolean status, BigDecimal buyout, Timestamp expirationDate, BigDecimal startingbid, Timestamp startingDate, String title, String scpId, String userId);
 
     @Query(value = "select scp_id from auction_showing where scp_id = ?1", nativeQuery = true)
-    AuctionShowing duplicateAuction(String scpID);
+    String duplicateAuction(String scpID);
 
     @Query(value = "select title from auction_showing where title = ?1", nativeQuery = true)
     String titleDuplicate(String title);

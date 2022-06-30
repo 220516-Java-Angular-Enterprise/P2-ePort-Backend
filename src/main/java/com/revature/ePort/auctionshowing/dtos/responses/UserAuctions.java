@@ -2,6 +2,7 @@ package com.revature.ePort.auctionshowing.dtos.responses;
 
 import com.revature.ePort.auctionshowing.AuctionShowing;
 import com.revature.ePort.bid.Bid;
+import com.revature.ePort.schedule.closer.AuctionCloser;
 import com.revature.ePort.scp.SCP;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserAuctions {
+    private String id;
     private String title;
     private BigDecimal buyout_bid;
     private BigDecimal starting_bid;
@@ -36,6 +38,14 @@ public class UserAuctions {
     }
 
     public UserAuctions() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -119,6 +129,7 @@ public class UserAuctions {
     }
 
     public void extractAuction(AuctionShowing details){
+        id = details.getId();
         title = details.getTitle();
         buyout_bid = details.getBuyoutBid();
         starting_bid = details.getStartingBid();
