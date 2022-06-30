@@ -38,7 +38,7 @@ public class AuctionController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    List<AuctionShowing> activeAutions(@RequestHeader("Authorization") String token){
+    List<AuctionShowing> activeAuctions(@RequestHeader("Authorization") String token){
         Principal user = tokenService.noTokenThrow(token);
         return auctionService.getAllActive();
     }
@@ -79,6 +79,15 @@ public class AuctionController {
     UserAuctions detailedAuction(@PathVariable String title, @RequestHeader("Authorization") String token){
         Principal user = tokenService.noTokenThrow(token);
         return auctionService.detailedAuction(title);
+    }
+
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping(value = "/status/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody void changeStatus(@PathVariable String id, @RequestHeader("Authorization") String token){
+        Principal user = tokenService.noTokenThrow(token);
+        if(!user.getRole().equals("ADMIN")) throw new InvalidRequestException("Unauthorized user");
+        auctionService.changeStatus(id);
     }
 
     //region Exception Handlers

@@ -47,6 +47,7 @@ public class AuctionService {
         newAuction.setscpName(auctionRepository.returnScpID(newAuction.getscpName()));
         if(scpDuplicate(newAuction.getscpName())) throw new InvalidRequestException("Duplicate SCP");
         if(!validDates(startingDate,expiration)) throw new InvalidRequestException("Invalid start date");
+        if(!titleDuplicate(newAuction.getTitle())) throw new InvalidRequestException("Duplicate title");
         auctionRepository.newAuction(UUID.randomUUID().toString(), newAuction.getStatus(),newAuction.getBuyOut(), expiration, newAuction.getStartingBid()
                                     ,startingDate, newAuction.getTitle(),newAuction.getscpName(),newAuction.getUser_id());
     }
@@ -61,6 +62,15 @@ public class AuctionService {
         List<AuctionShowing> sortedList = auctionRepository.activeAuctions();
         sortedList.stream().sorted(Comparator.comparing(AuctionShowing::getStartingDate));
         return sortedList;
+    }
+
+    public void changeStatus (String id){
+        if(auctionRepository.auctionStatus(id)) auctionRepository.disableAuction(id);
+        else auctionRepository.enableAuction(id);
+    }
+
+    private boolean titleDuplicate(String title){
+        return auctionRepository.titleDuplicate(title) == null;
     }
 
     private boolean validDates(Timestamp start, Timestamp end){
