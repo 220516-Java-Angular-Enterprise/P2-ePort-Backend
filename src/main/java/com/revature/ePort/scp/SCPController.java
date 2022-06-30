@@ -1,6 +1,7 @@
 package com.revature.ePort.scp;
 
 import com.doomedcat17.scpier.data.content.ContentNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.revature.ePort.auth.TokenService;
 import com.revature.ePort.auth.dtos.response.Principal;
 import com.revature.ePort.scp.response.SCPOut;
@@ -48,15 +49,6 @@ public class SCPController {
         return scpService.createSCP(scpOut.getName());
     }
 
-    @CrossOrigin
-    @RequestMapping("/test")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String testSCP(@RequestHeader("Authorization") String token, @RequestBody SCPOut scpOut){
-        Principal principal = tokenService.noTokenThrow(token);
-        if(!(principal.getRole().equals("ADMIN")||principal.getRole().equals("SELLER"))) throw new AuthenticationException("Invalid authentication");
-        return scpService.testSCP(scpOut.getName());
-    }
 
     @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
