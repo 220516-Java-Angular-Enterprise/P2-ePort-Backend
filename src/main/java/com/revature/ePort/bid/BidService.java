@@ -70,6 +70,21 @@ public class BidService {
         bidRepository.updateBid(updateBid.getAmount(),updateBid.getUser_id(),updateBid.getAuction_id());
     }
 
+    public List<Bid> getFinalBids(String id){
+        return bidRepository.closingBids(id);
+    }
+
+    public void closeBid(String auctionID, String userID){
+        String id = UUID.randomUUID().toString();
+        long today = System.currentTimeMillis();
+        Timestamp orderSent = new Timestamp(today+15);
+        Timestamp orderArrived = new Timestamp(today+45);
+        String shippingAddress = bidRepository.retrieveShippingAddress(userID);
+        bidRepository.closeAuction(auctionID);
+        bidRepository.createNewOrder(id, orderArrived, orderSent, "Preparing to package", shippingAddress);
+        bidRepository.orderIdOnBid(id, auctionID);
+    }
+
     private boolean auctionExists(String auctionID){
         return bidRepository.auctionExists(auctionID) != null;
     }

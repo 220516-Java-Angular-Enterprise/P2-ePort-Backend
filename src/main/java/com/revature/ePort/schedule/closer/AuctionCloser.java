@@ -2,50 +2,55 @@ package com.revature.ePort.schedule.closer;
 
 import com.revature.ePort.auctionshowing.AuctionService;
 import com.revature.ePort.auctionshowing.AuctionShowing;
+import com.revature.ePort.bid.Bid;
+import com.revature.ePort.bid.BidID;
+import com.revature.ePort.bid.BidService;
+
 import com.revature.ePort.util.annotations.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AuctionCloser implements Runnable{
 
     @Inject
+    private final BidService bidService;
     private final AuctionService auctionService;
-    private List<AuctionShowing> activeAuctionShowings;
 
     @Inject
     @Autowired
-    public AuctionCloser(AuctionService auctionService) {
+    public AuctionCloser(BidService bidService, AuctionService auctionService) {
+        this.bidService = bidService;
         this.auctionService = auctionService;
     }
 
-    public List<AuctionShowing> getActiveAuctionShowings() {
-        return activeAuctionShowings;
-    }
-
-    public void setActiveAuctionShowings(List<AuctionShowing> activeAuctionShowings) {
-        this.activeAuctionShowings = activeAuctionShowings;
-    }
 
     @Override
     public void run() {
+        long start = System.currentTimeMillis();
         try {
-            System.out.println("Auction Update Check Started");
-            activeAuctionShowings = auctionService.getAllActive();
-            for (AuctionShowing auction: activeAuctionShowings) {
-                System.out.println("Made it to the scheduled task");
-                if (auction.getExpirationDate().before(Timestamp.valueOf(LocalDateTime.now()))){
-                    auctionService.changeStatus(auction.getId());
-                    //auctionService update auction here (closing auction)
-                    //Create new order which sends out an email
+            for (AuctionShowing auction:auctionService.getExpiredAuctions()) {
+                auctionService.changeStatus(auction.getId());
+                List<Bid> bids = bidService.getFinalBids(auction.getId());
+                String auctionID = "";
+                if(!bids.isEmpty()){
+                    Bid bid = bids.get(0);
+                    auctionID = bid.getBidID().getAuctionShowingID();
+                    //auctionService.changeStatus(auctionID);
+                    String userID = bid.getBidID().getUserID();
+                    bidService.closeBid(auctionID, userID);
                 }
 
             }
-            System.out.println("Finished Auction Check");
+            long finish = System.currentTimeMillis();
+            System.out.println("Time taken: " + (finish - start) + "ms");
         } catch (Exception e){
             System.out.println("Error Scheduled update failed");
             e.printStackTrace();
