@@ -21,6 +21,9 @@ public interface AuctionRepository extends CrudRepository<AuctionShowing, String
     @Query(value = "select * from auction_showing where auction_status = true", nativeQuery = true)
     List<AuctionShowing> activeAuctions();
 
+    @Query(value = "select * from auction_showing where auction_status = true and expiration_date <= now()", nativeQuery = true)
+    List<AuctionShowing> expiredAuctions();
+
     @Query(value = "select id from scp where name = ?1", nativeQuery = true)
     String returnScpID(String name);
 

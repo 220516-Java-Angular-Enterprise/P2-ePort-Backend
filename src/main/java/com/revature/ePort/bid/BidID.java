@@ -21,5 +21,20 @@ public class BidID implements Serializable {
         this.userID = userID;
     }
 
+    public String getAuctionShowingID() {
+        return auctionShowingID;
+    }
+
+    public void setAuctionShowingID(String auctionShowingID) {
+        this.auctionShowingID = auctionShowingID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
 }
 

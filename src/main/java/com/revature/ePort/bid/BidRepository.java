@@ -1,5 +1,6 @@
 package com.revature.ePort.bid;
 
+import com.revature.ePort.auctionshowing.AuctionShowing;
 import com.revature.ePort.bid.dtos.requests.NewBid;
 import com.revature.ePort.bid.dtos.responses.ViewBidHistory;
 import org.springframework.data.jpa.repository.Modifying;
@@ -60,5 +61,10 @@ public interface BidRepository extends CrudRepository<Bid, String> {
     @Modifying
     @Query(value = "update users set funds = funds-?1 where id = ?2", nativeQuery = true)
     void removeFunds(BigDecimal amount, String id);
+
+    @Query(value = "select * from bid " +
+            "WHERE auction_showing_id = ?1 ORDER BY amount desc", nativeQuery = true)
+    List<Bid> closingBids(String id);
+    //"group by b.auction_showing_id, b.user_id, auction_status, expiration_date " +
 
 }

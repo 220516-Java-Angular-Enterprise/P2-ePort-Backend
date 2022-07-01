@@ -36,6 +36,10 @@ public class AuctionService {
         return auctionRepository.activeAuctions();
     }
 
+    public List<AuctionShowing> getExpiredAuctions(){
+        return auctionRepository.expiredAuctions();
+    }
+
     public List<AuctionShowing> getAllUserAuctions(String userID){
         return auctionRepository.userAuctions(userID);
     }
