@@ -34,7 +34,7 @@ public class AuctionCloser implements Runnable{
 
     @Override
     public void run() {
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis(); //for getting the amount of time
         try {
             for (AuctionShowing auction:auctionService.getExpiredAuctions()) {
                 auctionService.changeStatus(auction.getId());
@@ -49,8 +49,8 @@ public class AuctionCloser implements Runnable{
                 }
 
             }
-            long finish = System.currentTimeMillis();
-            System.out.println("Time taken: " + (finish - start) + "ms");
+//            long finish = System.currentTimeMillis(); //for getting the amount of time
+//            System.out.println("Time taken: " + (finish - start) + "ms"); //for getting the amount of time
         } catch (Exception e){
             System.out.println("Error Scheduled update failed");
             e.printStackTrace();

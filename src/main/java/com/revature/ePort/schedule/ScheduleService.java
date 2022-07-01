@@ -29,7 +29,7 @@ public class ScheduleService {
     public String createAuctionUpdater(){
         if(executor == null) {
             executor = Executors.newScheduledThreadPool(1);
-            ScheduledFuture<?> result = executor.scheduleAtFixedRate(auctionCloser,0,1, TimeUnit.MINUTES);
+            ScheduledFuture<?> result = executor.scheduleAtFixedRate(auctionCloser,0,5, TimeUnit.MINUTES);
             return "Auction Timer Started";
         }
         return "Auction Timer Already Started";
